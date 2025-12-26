@@ -1,0 +1,32 @@
+{
+  "name": "eventease",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "swagger": "node swagger.js",
+    "start": "node server.js",
+    "setup": "node setup.js",
+    "dev": "npm run swagger && nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.11.0",
+    "body-parser": "^2.2.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.18.0",
+    "multer": "^2.0.2",
+    "swagger-autogen": "^2.23.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
