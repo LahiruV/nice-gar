@@ -8,7 +8,6 @@ import { useRegister } from '@zenra/services';
 import { toast } from 'sonner'
 
 export const RegisterPage = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { registerMutate } = useRegister();
   const [name, setName] = useState('');
@@ -41,7 +40,7 @@ export const RegisterPage = () => {
       onSuccess: () => {
         setLoading(false);
         toast.success('Registration successful! Welcome aboard.');
-        navigate('/login')
+        navigate('/')
       },
       onError: (error) => {
         setLoading(false);
@@ -85,8 +84,8 @@ export const RegisterPage = () => {
         <motion.div
           className="absolute bottom-0 left-0 right-0 p-8 text-white"
         >
-          <h2 className="text-3xl font-bold mb-2">{t('auth.register.imageTitle')}</h2>
-          <p className="text-lg">{t('auth.register.imageSubtitle')}</p>
+          <h2 className="text-3xl font-bold mb-2">Start Your Journey</h2>
+          <p className="text-lg">Begin your adventure in paradise</p>
         </motion.div>
       </div>
 
@@ -95,11 +94,11 @@ export const RegisterPage = () => {
           className="w-full max-w-md"
         >
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">{t('auth.register.title')}</h2>
+            <h2 className="text-3xl font-bold text-gray-900">Create Your Account</h2>
             <p className="mt-2 text-gray-600">
-              {t('auth.register.haveAccount')}{' '}
-              <Link to="/login" className="text-blue-600 hover:text-blue-500 font-medium">
-                {t('auth.register.signIn')}
+              Already have an account?{' '}
+              <Link to="/" className="text-blue-600 hover:text-blue-500 font-medium">
+                Sign In
               </Link>
             </p>
           </div>

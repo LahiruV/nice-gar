@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux';
 import { setAuthenticated, setUser } from '@zenra/store';
 
 export const LoginPage = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loginMutate } = useLogin();
@@ -47,8 +46,8 @@ export const LoginPage = () => {
         <motion.div
           className="absolute bottom-0 left-0 right-0 p-8 text-white"
         >
-          <h2 className="text-3xl font-bold mb-2">{t('auth.login.imageTitle')}</h2>
-          <p className="text-lg">{t('auth.login.imageSubtitle')}</p>
+          <h2 className="text-3xl font-bold mb-2">Discover Sri Lanka</h2>
+          <p className="text-lg">Your journey to paradise begins here</p>
         </motion.div>
       </div>
 
@@ -62,15 +61,15 @@ export const LoginPage = () => {
               className="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors mb-4"
             >
               <ArrowLeftIcon className="h-5 w-5 mr-2" />
-              <span>{t('backToHome')}</span>
+              <span>Back to Home</span>
             </Link>
-            <h2 className="text-3xl font-bold text-gray-900">{t('auth.login.title')}</h2>
-            {/* <p className="mt-2 text-gray-600">
-              {t('auth.login.noAccount')}{' '}
+            <h2 className="text-3xl font-bold text-gray-900">Login to Your Account</h2>
+            <p className="mt-2 text-gray-600">
+              Don't have an account?{' '}
               <Link to="/register" className="text-blue-600 hover:text-blue-500 font-medium">
-                {t('auth.login.signUp')}
+                Sign Up
               </Link>
-            </p> */}
+            </p>
           </div>
           <div className="bg-white p-8 rounded-lg shadow-lg">
             <LoginForm onSubmit={handleLogin} />
