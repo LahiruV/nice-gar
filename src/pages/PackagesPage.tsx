@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PageTransition, PackageCard, PackageHero } from '@zenra/components';
-import { getPackages } from '@zenra/services';
+import { getEmployees } from '@zenra/services';
 import { CircularIndeterminate } from '@zenra/widgets';
 
 interface PackageType {
@@ -19,7 +19,7 @@ interface Filters {
 }
 
 export const PackagesPage = () => {
-  const { response, isFetching } = getPackages(true);
+  const { response, isFetching } = getEmployees(true);
   const [filters, setFilters] = useState<Filters>({
     duration: 'all',
     priceRange: 'all'
