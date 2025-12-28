@@ -3,7 +3,7 @@ import { PencilIcon, } from '@heroicons/react/24/outline';
 import { Employee, EmployeeFormData } from '@zenra/models';
 import { toast } from 'sonner';
 import { useEmployee, useImageToBase64 } from '@zenra/services';
-import { Input } from '@mui/material';
+import { Input, MenuItem, Select } from '@mui/material';
 
 interface PackageFormProps {
     isModalOpen: boolean;
@@ -47,14 +47,10 @@ export const AdminEmployeeForm = ({
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        name === "duration" ?
-            setFormData((prev: EmployeeFormData) => ({ ...prev, [name]: Math.max(0, parseInt(value)) })) :
-            name === "price" ?
-                setFormData((prev: EmployeeFormData) => ({ ...prev, [name]: Math.max(0, parseFloat(value)) })) :
-                setFormData((prev: EmployeeFormData) => ({
-                    ...prev,
-                    [name]: name === 'price' ? parseFloat(value) || 0 : value
-                }));
+        setFormData((prev: EmployeeFormData) => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -154,13 +150,28 @@ export const AdminEmployeeForm = ({
                         required
                     />
 
-                    <TextField
+                    <Select
                         label="Position"
                         name="position"
                         value={formData.position}
-                        onChange={handleInputChange}
+                        onChange={(e) => setFormData((prev: EmployeeFormData) => ({
+                            ...prev,
+                            position: e.target.value as string
+                        }))}
+                        fullWidth
                         required
-                    />
+                    >
+                        <MenuItem value="" style={{
+                            color: 'red'
+                        }}>
+                            <em>None</em>
+                        </MenuItem>
+                        <MenuItem value="Manager">Manager</MenuItem>
+                        <MenuItem value="Receptionist">Receptionist</MenuItem>
+                        <MenuItem value="Housekeeping">Housekeeping</MenuItem>
+                        <MenuItem value="Chef">Chef</MenuItem>
+                        <MenuItem value="Waiter">Waiter</MenuItem>
+                    </Select>
 
                     <TextField
                         label="Password"
