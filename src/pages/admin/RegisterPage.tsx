@@ -1,7 +1,6 @@
 import { RegisterForm } from '@zenra/components';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { RegisterCredentials } from '@zenra/models';
 import { useRegister } from '@zenra/services';

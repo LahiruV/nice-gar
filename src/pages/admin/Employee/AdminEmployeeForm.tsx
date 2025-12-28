@@ -1,6 +1,6 @@
 import { TextField, Button, Modal } from '@zenra/widgets';
 import { PencilIcon, } from '@heroicons/react/24/outline';
-import { Package, EmployeeFormData } from '@zenra/models';
+import { Employee, EmployeeFormData } from '@zenra/models';
 import { toast } from 'sonner';
 import { useImageToBase64, usePackage } from '@zenra/services';
 import { Input } from '@mui/material';
@@ -8,11 +8,11 @@ import { Input } from '@mui/material';
 interface PackageFormProps {
     isModalOpen: boolean;
     setIsModalOpen: Function;
-    editingPackage: Package | null;
+    editingPackage: Employee | null;
     setEditingPackage: Function;
     isViewModalOpen: boolean;
     setIsViewModalOpen: Function;
-    viewingPackage: Package | null;
+    viewingPackage: Employee | null;
     setViewingPackage: Function;
     formData: EmployeeFormData;
     setFormData: Function;
@@ -20,13 +20,13 @@ interface PackageFormProps {
 }
 
 const initialFormData: EmployeeFormData = {
-    title: '',
-    description: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    password: '',
+    position: '',
     image: '',
-    price: 0,
-    duration: '',
-    groupSize: '',
-    startDate: '',
 };
 
 export const AdminEmployeeForm = ({
@@ -91,16 +91,16 @@ export const AdminEmployeeForm = ({
         handleCloseModal();
     };
 
-    const handleEdit = (pkg: Package) => {
+    const handleEdit = (pkg: Employee) => {
         setEditingPackage(pkg);
         setFormData({
-            title: pkg.title,
-            description: pkg.description,
+            firstName: pkg.firstName,
+            lastName: pkg.lastName,
+            email: pkg.email,
+            phone: pkg.phone,
+            password: pkg.password,
+            position: pkg.position,
             image: pkg.image,
-            price: pkg.price,
-            duration: pkg.duration,
-            groupSize: pkg.groupSize,
-            startDate: pkg.startDate,
         });
         setIsModalOpen(true);
     };
@@ -119,22 +119,57 @@ export const AdminEmployeeForm = ({
                 title={editingPackage ? 'Edit Package Form' : 'Add New Employee'}
             >
                 <form onSubmit={handleSubmit} className="space-y-6 p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                        <TextField
+                            label="First Name"
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleInputChange}
+                            required
+                        />
+
+                        <TextField
+                            label="Last Name"
+                            name="lastName"
+                            value={formData.lastName}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
                     <TextField
-                        label="Package Title"
-                        name="title"
-                        value={formData.title}
+                        label="Email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
                         onChange={handleInputChange}
                         required
                     />
 
                     <TextField
-                        label="Description"
-                        name="description"
-                        value={formData.description}
+                        label="Phone"
+                        name="phone"
+                        value={formData.phone}
                         onChange={handleInputChange}
-                        multiline
-                        rows={3}
                         required
+                    />
+
+                    <TextField
+                        label="Position"
+                        name="position"
+                        value={formData.position}
+                        onChange={handleInputChange}
+                        required
+                    />
+
+                    <TextField
+                        label="Password"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        required={!editingPackage}
+                        helperText={editingPackage ? "Leave blank to keep current password" : ""}
                     />
 
                     <Input
@@ -163,47 +198,6 @@ export const AdminEmployeeForm = ({
                         className="mb-4 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-100 hover:file:bg-gray-200"
                     />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <TextField
-                            label="Price ($)"
-                            name="price"
-                            type="number"
-                            value={formData.price}
-                            onChange={handleInputChange}
-                            required
-                        />
-
-                        <TextField
-                            label="Duration Days"
-                            name="duration"
-                            type='number'
-                            value={formData.duration}
-                            onChange={handleInputChange}
-                            required
-                            helperText="e.g 5 Days"
-                        />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <TextField
-                            label="Group Size"
-                            name="groupSize"
-                            value={formData.groupSize}
-                            onChange={handleInputChange}
-                            required
-                            helperText="e.g., Max 10"
-                        />
-
-                        <TextField
-                            label="Availability"
-                            name="startDate"
-                            value={formData.startDate}
-                            onChange={handleInputChange}
-                            required
-                            helperText="e.g., Available year-round"
-                        />
-                    </div>
-
                     <div className="flex justify-end space-x-4 pt-6">
                         <Button
                             type="button"
@@ -216,7 +210,7 @@ export const AdminEmployeeForm = ({
                             type="submit"
                             variant="primary"
                         >
-                            {editingPackage ? 'Update Package' : 'Add Package'}
+                            {editingPackage ? 'Update Employee' : 'Add Employee'}
                         </Button>
                     </div>
                 </form>
@@ -225,40 +219,32 @@ export const AdminEmployeeForm = ({
             <Modal
                 open={isViewModalOpen}
                 onClose={() => setIsViewModalOpen(false)}
-                title="Package Details"
+                title="Employee Details"
             >
                 {viewingPackage && (
                     <div className="space-y-6">
                         <img
 
                             src={`data:image/png;base64,${viewingPackage.image}`}
-                            alt={viewingPackage.title}
+                            alt={viewingPackage.firstName + " " + viewingPackage.lastName}
                             className="w-full h-64 object-cover rounded-lg"
                         />
 
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                                {viewingPackage.title}
+                                {viewingPackage.firstName + " " + viewingPackage.lastName}
                             </h2>
-                            <p className="text-gray-600 mb-4">{viewingPackage.description}</p>
+                            <p className="text-gray-600 mb-4">{viewingPackage.position}</p>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <span className="font-semibold text-gray-700">Price:</span>
-                                <p className="text-2xl font-bold text-primary">${viewingPackage.price}</p>
+                                <h3 className="text-lg font-semibold text-gray-900">Email</h3>
+                                <p className="text-gray-700">{viewingPackage.email}</p>
                             </div>
                             <div>
-                                <span className="font-semibold text-gray-700">Duration:</span>
-                                <p className="text-gray-900">{viewingPackage.duration}</p>
-                            </div>
-                            <div>
-                                <span className="font-semibold text-gray-700">Group Size:</span>
-                                <p className="text-gray-900">{viewingPackage.groupSize}</p>
-                            </div>
-                            <div>
-                                <span className="font-semibold text-gray-700">Availability:</span>
-                                <p className="text-gray-900">{viewingPackage.startDate}</p>
+                                <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
+                                <p className="text-gray-700">{viewingPackage.phone}</p>
                             </div>
                         </div>
 

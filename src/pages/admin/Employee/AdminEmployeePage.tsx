@@ -2,20 +2,20 @@ import { useMemo, useState } from 'react';
 import { PageTransition } from '@zenra/components';
 import { AlertDialogSlide, Button, CircularIndeterminate, sortArray, SortConfig, Table } from '@zenra/widgets';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { Package, EmployeeFormData } from '@zenra/models';
+import { Employee, EmployeeFormData } from '@zenra/models';
 import { toast } from 'sonner';
 import { AdminEmployeeForm } from './AdminEmployeeForm';
 import { getPackages, usePackage } from '@zenra/services';
 import { packageColumns } from './PackageColumns';
 
 const initialFormData: EmployeeFormData = {
-    title: '',
-    description: '',
-    image: '',
-    price: 0,
-    duration: '',
-    groupSize: '',
-    startDate: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    password: '',
+    position: '',
+    image: ''
 };
 
 export const AdminEmployeePage = () => {
@@ -24,8 +24,8 @@ export const AdminEmployeePage = () => {
     const { response: packages, refetch, isFetching } = getPackages(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-    const [editingPackage, setEditingPackage] = useState<Package | null>(null);
-    const [viewingPackage, setViewingPackage] = useState<Package | null>(null);
+    const [editingPackage, setEditingPackage] = useState<Employee | null>(null);
+    const [viewingPackage, setViewingPackage] = useState<Employee | null>(null);
     const [formData, setFormData] = useState<EmployeeFormData>(initialFormData);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
@@ -38,21 +38,21 @@ export const AdminEmployeePage = () => {
         field: string;
         direction: 'asc' | 'desc';
     }>({
-        field: 'price',
-        direction: 'desc',
+        field: 'firstName',
+        direction: 'asc',
     });
 
-    const handleEdit = (pkg: Package) => {
-        setEditingPackage(pkg);
+    const handleEdit = (data: Employee) => {
+        setEditingPackage(data);
         setFormData({
-            id: pkg._id,
-            title: pkg.title,
-            description: pkg.description,
-            image: pkg.image,
-            price: pkg.price,
-            duration: pkg.duration,
-            groupSize: pkg.groupSize,
-            startDate: pkg.startDate
+            id: data._id,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phone: data.phone,
+            password: data.password,
+            position: data.position,
+            image: data.image,
         });
         setIsModalOpen(true);
     };
@@ -66,8 +66,8 @@ export const AdminEmployeePage = () => {
         setDelID(id);
     };
 
-    const handleView = (pkg: Package) => {
-        setViewingPackage(pkg);
+    const handleView = (data: Employee) => {
+        setViewingPackage(data);
         setIsViewModalOpen(true);
     };
 
@@ -101,7 +101,7 @@ export const AdminEmployeePage = () => {
 
     const sortedPackages = useMemo(() => {
         const data = Array.isArray(packages?.data) ? packages?.data : [];
-        return sortArray(data, sortConfig as SortConfig<Package>);
+        return sortArray(data, sortConfig as SortConfig<Employee>);
     }, [packages, sortConfig]);
 
     const handleSort = (field: string, direction: 'asc' | 'desc') => setSortConfig({ field, direction });
@@ -125,7 +125,7 @@ export const AdminEmployeePage = () => {
                         <Table
                             columns={packageColumns({ handleView, handleEdit, handleDelete })}
                             data={sortedPackages}
-                            keyExtractor={(pkg) => pkg._id ?? ''}
+                            keyExtractor={(data) => data._id ?? ''}
                             defaultSort={sortConfig}
                             onSort={handleSort}
                             rowsPerPageOptions={[5, 10, 25]}
