@@ -9,10 +9,10 @@ interface EmployeeColumnsProps {
 }
 
 /**
- * PackageActions Component
- * Handles action buttons for a single package row
+ * EmployeeActions Component
+ * Handles action buttons for a single employee row
  */
-const PackageActions = ({
+const EmployeeActions = ({
     pkg,
     handleView,
     handleEdit,
@@ -102,7 +102,7 @@ export const employeeColumns = ({
             label: "Actions",
             align: "right",
             render: (pkg) => (
-                <PackageActions
+                <EmployeeActions
                     pkg={pkg}
                     handleView={handleView}
                     handleEdit={handleEdit}

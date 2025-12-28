@@ -5,7 +5,7 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { Employee, EmployeeFormData } from '@zenra/models';
 import { toast } from 'sonner';
 import { AdminEmployeeForm } from './AdminEmployeeForm';
-import { employeeColumns } from './PackageColumns';
+import { employeeColumns } from './AdminEmployeeColumns';
 import { getEmployees, useEmployee } from '@zenra/services';
 
 const initialFormData: EmployeeFormData = {
