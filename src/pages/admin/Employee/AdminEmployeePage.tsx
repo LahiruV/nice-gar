@@ -5,8 +5,8 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { Employee, EmployeeFormData } from '@zenra/models';
 import { toast } from 'sonner';
 import { AdminEmployeeForm } from './AdminEmployeeForm';
-import { getPackages, usePackage } from '@zenra/services';
-import { packageColumns } from './PackageColumns';
+import { getEmployees, useEmployee } from 'src/services/packageApi';
+import { employeeColumns } from './PackageColumns';
 
 const initialFormData: EmployeeFormData = {
     firstName: '',
@@ -20,12 +20,12 @@ const initialFormData: EmployeeFormData = {
 
 export const AdminEmployeePage = () => {
 
-    const { packageDeleteMutate } = usePackage();
-    const { response: packages, refetch, isFetching } = getPackages(true);
+    const { employeeDeleteMutate } = useEmployee();
+    const { response: employees, refetch, isFetching } = getEmployees(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-    const [editingPackage, setEditingPackage] = useState<Employee | null>(null);
-    const [viewingPackage, setViewingPackage] = useState<Employee | null>(null);
+    const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
+    const [viewingEmployee, setViewingEmployee] = useState<Employee | null>(null);
     const [formData, setFormData] = useState<EmployeeFormData>(initialFormData);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
@@ -43,7 +43,7 @@ export const AdminEmployeePage = () => {
     });
 
     const handleEdit = (data: Employee) => {
-        setEditingPackage(data);
+        setEditingEmployee(data);
         setFormData({
             id: data._id,
             firstName: data.firstName,
@@ -67,12 +67,12 @@ export const AdminEmployeePage = () => {
     };
 
     const handleView = (data: Employee) => {
-        setViewingPackage(data);
+        setViewingEmployee(data);
         setIsViewModalOpen(true);
     };
 
     const handleAddNew = () => {
-        setEditingPackage(null);
+        setEditingEmployee(null);
         setFormData(initialFormData);
         setIsModalOpen(true);
     };
@@ -81,13 +81,13 @@ export const AdminEmployeePage = () => {
 
     const handleDeleteConfirmed = () => {
         if (delID) {
-            packageDeleteMutate(delID, {
+            employeeDeleteMutate(delID, {
                 onSuccess: () => {
                     refetch();
-                    toast.success('Package deleted successfully!');
+                    toast.success('Employee deleted successfully!');
                 },
                 onError: (error) => {
-                    toast.error('Failed to delete package');
+                    toast.error('Failed to delete employee. Please try again.');
                     console.error('Delete failed:', error);
                 },
             });
@@ -99,10 +99,10 @@ export const AdminEmployeePage = () => {
         toast.info('Deletion cancelled');
     };
 
-    const sortedPackages = useMemo(() => {
-        const data = Array.isArray(packages?.data) ? packages?.data : [];
+    const sortedEmployees = useMemo(() => {
+        const data = Array.isArray(employees?.data) ? employees?.data : [];
         return sortArray(data, sortConfig as SortConfig<Employee>);
-    }, [packages, sortConfig]);
+    }, [employees, sortConfig]);
 
     const handleSort = (field: string, direction: 'asc' | 'desc') => setSortConfig({ field, direction });
 
@@ -123,8 +123,8 @@ export const AdminEmployeePage = () => {
                     </div>
                     {isFetching ? <CircularIndeterminate /> :
                         <Table
-                            columns={packageColumns({ handleView, handleEdit, handleDelete })}
-                            data={sortedPackages}
+                            columns={employeeColumns({ handleView, handleEdit, handleDelete })}
+                            data={sortedEmployees || []}
                             keyExtractor={(data) => data._id ?? ''}
                             defaultSort={sortConfig}
                             onSort={handleSort}
@@ -136,12 +136,12 @@ export const AdminEmployeePage = () => {
                         refetch={refetch}
                         isModalOpen={isModalOpen}
                         setIsModalOpen={setIsModalOpen}
-                        editingPackage={editingPackage}
-                        setEditingPackage={setEditingPackage}
+                        editingEmployee={editingEmployee}
+                        setEditingEmployee={setEditingEmployee}
                         isViewModalOpen={isViewModalOpen}
                         setIsViewModalOpen={setIsViewModalOpen}
-                        viewingPackage={viewingPackage}
-                        setViewingPackage={setViewingPackage}
+                        viewingEmployee={viewingEmployee}
+                        setViewingEmployee={setViewingEmployee}
                         formData={formData}
                         setFormData={setFormData}
                     />

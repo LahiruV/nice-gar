@@ -1,10 +1,10 @@
 import { PencilIcon, TrashIcon, EyeIcon } from "@heroicons/react/24/outline";
 import { IconButton } from "@mui/material";
-import { Package, Column } from "@zenra/models";
+import { Column, Employee } from "@zenra/models";
 
-interface PackageColumnsProps {
-    handleView: (pkg: Package) => void;
-    handleEdit: (pkg: Package) => void;
+interface EmployeeColumnsProps {
+    handleView: (pkg: Employee) => void;
+    handleEdit: (pkg: Employee) => void;
     handleDelete: (pkgId: string) => void;
 }
 
@@ -18,9 +18,9 @@ const PackageActions = ({
     handleEdit,
     handleDelete,
 }: {
-    pkg: Package;
-    handleView: (pkg: Package) => void;
-    handleEdit: (pkg: Package) => void;
+    pkg: Employee;
+    handleView: (pkg: Employee) => void;
+    handleEdit: (pkg: Employee) => void;
     handleDelete: (pkgId: string) => void;
 }) => {
     return (
@@ -51,13 +51,13 @@ const PackageActions = ({
 };
 
 /**
- * Package Columns Definition
+ * Employee Columns Definition
  */
-export const packageColumns = ({
+export const employeeColumns = ({
     handleView,
     handleEdit,
     handleDelete,
-}: PackageColumnsProps): Column<Package>[] => {
+}: EmployeeColumnsProps): Column<Employee>[] => {
     return [
         {
             id: "image",
@@ -69,32 +69,31 @@ export const packageColumns = ({
                             ? `data:image/png;base64,${pkg.image}`
                             : "/placeholder.png"
                     }
-                    alt={pkg.title || "Package"}
+                    alt={pkg.firstName || "Employee Image"}
                     className="w-16 h-16 object-cover rounded-lg border"
                 />
             ),
             width: 80,
         },
         {
-            id: "title",
-            label: "Title",
+            id: "firstName",
+            label: "First Name",
             sortable: true,
         },
         {
-            id: "duration",
-            label: "Duration",
+            id: "lastName",
+            label: "Last Name",
             sortable: true,
             align: "right",
         },
         {
-            id: "groupSize",
-            label: "Group Size",
+            id: "phone",
+            label: "Phone",
             align: "right",
         },
         {
-            id: "price",
-            label: "Price",
-            render: (pkg) => `$${pkg.price ?? 0}`,
+            id: "position",
+            label: "Position",
             sortable: true,
             align: "right",
         },

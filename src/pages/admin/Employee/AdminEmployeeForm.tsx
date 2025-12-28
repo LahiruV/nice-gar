@@ -2,18 +2,18 @@ import { TextField, Button, Modal } from '@zenra/widgets';
 import { PencilIcon, } from '@heroicons/react/24/outline';
 import { Employee, EmployeeFormData } from '@zenra/models';
 import { toast } from 'sonner';
-import { useImageToBase64, usePackage } from '@zenra/services';
+import { useEmployee, useImageToBase64 } from '@zenra/services';
 import { Input } from '@mui/material';
 
 interface PackageFormProps {
     isModalOpen: boolean;
     setIsModalOpen: Function;
-    editingPackage: Employee | null;
-    setEditingPackage: Function;
+    editingEmployee: Employee | null;
+    setEditingEmployee: Function;
     isViewModalOpen: boolean;
     setIsViewModalOpen: Function;
-    viewingPackage: Employee | null;
-    setViewingPackage: Function;
+    viewingEmployee: Employee | null;
+    setViewingEmployee: Function;
     formData: EmployeeFormData;
     setFormData: Function;
     refetch: Function;
@@ -32,17 +32,17 @@ const initialFormData: EmployeeFormData = {
 export const AdminEmployeeForm = ({
     isModalOpen,
     setIsModalOpen,
-    editingPackage,
-    setEditingPackage,
+    editingEmployee,
+    setEditingEmployee,
     isViewModalOpen,
     setIsViewModalOpen,
-    viewingPackage,
+    viewingEmployee,
     formData,
     setFormData,
     refetch,
 }: PackageFormProps) => {
 
-    const { packageAddMutate, packageUpdateMutate } = usePackage();
+    const { employeeAddMutate, employeeUpdateMutate } = useEmployee();
     const { imageToBase64Mutate } = useImageToBase64();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -59,55 +59,55 @@ export const AdminEmployeeForm = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (editingPackage) {
-            const updatedPackage: EmployeeFormData = {
+        if (editingEmployee) {
+            const updatedEmployee: EmployeeFormData = {
                 ...formData,
-                id: editingPackage._id ? editingPackage._id : undefined
+                id: editingEmployee._id ? editingEmployee._id : undefined
             };
-            packageUpdateMutate(updatedPackage, {
+            employeeUpdateMutate(updatedEmployee, {
                 onSuccess: () => {
                     refetch();
                     setFormData(initialFormData);
-                    toast.success('Package updated successfully!');
+                    toast.success('Employee updated successfully!');
                 },
                 onError: (error) => {
-                    toast.error('Package update failed');
-                    console.error('Package update failed:', error);
+                    toast.error('Employee update failed');
+                    console.error('Employee update failed:', error);
                 }
             });
         } else {
-            packageAddMutate(formData, {
+            employeeAddMutate(formData, {
                 onSuccess: () => {
                     refetch();
                     setFormData(initialFormData);
-                    toast.success('Package added successfully!');
+                    toast.success('Employee added successfully!');
                 },
                 onError: (error) => {
-                    toast.error('Package addition failed');
-                    console.error('Package addition failed:', error);
+                    toast.error('Employee addition failed');
+                    console.error('Employee addition failed:', error);
                 }
             });
         }
         handleCloseModal();
     };
 
-    const handleEdit = (pkg: Employee) => {
-        setEditingPackage(pkg);
+    const handleEdit = (data: Employee) => {
+        setEditingEmployee(data);
         setFormData({
-            firstName: pkg.firstName,
-            lastName: pkg.lastName,
-            email: pkg.email,
-            phone: pkg.phone,
-            password: pkg.password,
-            position: pkg.position,
-            image: pkg.image,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phone: data.phone,
+            password: data.password,
+            position: data.position,
+            image: data.image,
         });
         setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        setEditingPackage(null);
+        setEditingEmployee(null);
         setFormData(initialFormData);
     };
 
@@ -116,7 +116,7 @@ export const AdminEmployeeForm = ({
             <Modal
                 open={isModalOpen}
                 onClose={handleCloseModal}
-                title={editingPackage ? 'Edit Package Form' : 'Add New Employee'}
+                title={editingEmployee ? 'Edit Employee Form' : 'Add New Employee'}
             >
                 <form onSubmit={handleSubmit} className="space-y-6 p-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -168,8 +168,8 @@ export const AdminEmployeeForm = ({
                         type="password"
                         value={formData.password}
                         onChange={handleInputChange}
-                        required={!editingPackage}
-                        helperText={editingPackage ? "Leave blank to keep current password" : ""}
+                        required={!editingEmployee}
+                        helperText={editingEmployee ? "Leave blank to keep current password" : ""}
                     />
 
                     <Input
@@ -210,7 +210,7 @@ export const AdminEmployeeForm = ({
                             type="submit"
                             variant="primary"
                         >
-                            {editingPackage ? 'Update Employee' : 'Add Employee'}
+                            {editingEmployee ? 'Update Employee' : 'Add Employee'}
                         </Button>
                     </div>
                 </form>
@@ -221,30 +221,30 @@ export const AdminEmployeeForm = ({
                 onClose={() => setIsViewModalOpen(false)}
                 title="Employee Details"
             >
-                {viewingPackage && (
+                {viewingEmployee && (
                     <div className="space-y-6">
                         <img
 
-                            src={`data:image/png;base64,${viewingPackage.image}`}
-                            alt={viewingPackage.firstName + " " + viewingPackage.lastName}
+                            src={`data:image/png;base64,${viewingEmployee.image}`}
+                            alt={viewingEmployee.firstName + " " + viewingEmployee.lastName}
                             className="w-full h-64 object-cover rounded-lg"
                         />
 
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                                {viewingPackage.firstName + " " + viewingPackage.lastName}
+                                {viewingEmployee.firstName + " " + viewingEmployee.lastName}
                             </h2>
-                            <p className="text-gray-600 mb-4">{viewingPackage.position}</p>
+                            <p className="text-gray-600 mb-4">{viewingEmployee.position}</p>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-900">Email</h3>
-                                <p className="text-gray-700">{viewingPackage.email}</p>
+                                <p className="text-gray-700">{viewingEmployee.email}</p>
                             </div>
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
-                                <p className="text-gray-700">{viewingPackage.phone}</p>
+                                <p className="text-gray-700">{viewingEmployee.phone}</p>
                             </div>
                         </div>
 
@@ -259,7 +259,7 @@ export const AdminEmployeeForm = ({
                                 variant="primary"
                                 onClick={() => {
                                     setIsViewModalOpen(false);
-                                    handleEdit(viewingPackage);
+                                    handleEdit(viewingEmployee);
                                 }}
                                 startIcon={<PencilIcon className="h-5 w-5" />}
                             >
