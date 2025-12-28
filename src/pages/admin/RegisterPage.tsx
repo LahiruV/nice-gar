@@ -76,16 +76,18 @@ export const RegisterPage = () => {
     <div className="min-h-screen flex">
       <div className="hidden lg:block lg:w-1/2 relative">
         <img
-          src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=2000&auto=format&fit=crop"
-          alt="Sri Lanka Beach"
+          src="https://media.gettyimages.com/id/2208698368/photo/an-employee-performs-quality-checks-on-garments-inside-a-garment-factory-in-katunayake-free.jpg?s=612x612&w=0&k=20&c=LyzKrH1i_lwIY5ORwmUNy0uEZa9IfgiUjZ2ok9ofNX8="
+          alt="Login Background"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-blue-900 bg-opacity-30" />
         <motion.div
           className="absolute bottom-0 left-0 right-0 p-8 text-white"
         >
-          <h2 className="text-3xl font-bold mb-2">Start Your Journey</h2>
-          <p className="text-lg">Begin your adventure in paradise</p>
+          <h2 className="text-3xl font-bold mb-2">Entry X</h2>
+          <p className="text-lg">
+            Streamlining Workforce Management for a Smarter Tomorrow
+          </p>
         </motion.div>
       </div>
 
