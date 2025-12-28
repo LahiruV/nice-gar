@@ -2,13 +2,13 @@ import { useMemo, useState } from 'react';
 import { PageTransition } from '@zenra/components';
 import { AlertDialogSlide, Button, CircularIndeterminate, sortArray, SortConfig, Table } from '@zenra/widgets';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { Package, PackageFormData } from '@zenra/models';
+import { Package, EmployeeFormData } from '@zenra/models';
 import { toast } from 'sonner';
-import { AdminPackageForm } from './PackageForm';
+import { AdminEmployeeForm } from './AdminEmployeeForm';
 import { getPackages, usePackage } from '@zenra/services';
 import { packageColumns } from './PackageColumns';
 
-const initialFormData: PackageFormData = {
+const initialFormData: EmployeeFormData = {
     title: '',
     description: '',
     image: '',
@@ -18,7 +18,7 @@ const initialFormData: PackageFormData = {
     startDate: '',
 };
 
-export const AdminPackagesPage = () => {
+export const AdminEmployeePage = () => {
 
     const { packageDeleteMutate } = usePackage();
     const { response: packages, refetch, isFetching } = getPackages(true);
@@ -26,7 +26,7 @@ export const AdminPackagesPage = () => {
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [editingPackage, setEditingPackage] = useState<Package | null>(null);
     const [viewingPackage, setViewingPackage] = useState<Package | null>(null);
-    const [formData, setFormData] = useState<PackageFormData>(initialFormData);
+    const [formData, setFormData] = useState<EmployeeFormData>(initialFormData);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -112,13 +112,13 @@ export const AdminPackagesPage = () => {
             <div className="bg-gray-100 p-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="flex justify-between items-center mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900">Package Management</h1>
+                        <h1 className="text-3xl font-bold text-gray-900">Employee Management</h1>
                         <Button
                             variant="primary"
                             startIcon={<PlusIcon className="h-5 w-5" />}
                             onClick={handleAddNew}
                         >
-                            Add New Package
+                            Add New Employee
                         </Button>
                     </div>
                     {isFetching ? <CircularIndeterminate /> :
@@ -132,7 +132,7 @@ export const AdminPackagesPage = () => {
                             defaultRowsPerPage={10}
                         />
                     }
-                    <AdminPackageForm
+                    <AdminEmployeeForm
                         refetch={refetch}
                         isModalOpen={isModalOpen}
                         setIsModalOpen={setIsModalOpen}

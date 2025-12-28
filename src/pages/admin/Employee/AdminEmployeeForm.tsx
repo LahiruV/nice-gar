@@ -1,6 +1,6 @@
 import { TextField, Button, Modal } from '@zenra/widgets';
 import { PencilIcon, } from '@heroicons/react/24/outline';
-import { Package, PackageFormData } from '@zenra/models';
+import { Package, EmployeeFormData } from '@zenra/models';
 import { toast } from 'sonner';
 import { useImageToBase64, usePackage } from '@zenra/services';
 import { Input } from '@mui/material';
@@ -14,12 +14,12 @@ interface PackageFormProps {
     setIsViewModalOpen: Function;
     viewingPackage: Package | null;
     setViewingPackage: Function;
-    formData: PackageFormData;
+    formData: EmployeeFormData;
     setFormData: Function;
     refetch: Function;
 }
 
-const initialFormData: PackageFormData = {
+const initialFormData: EmployeeFormData = {
     title: '',
     description: '',
     image: '',
@@ -29,7 +29,7 @@ const initialFormData: PackageFormData = {
     startDate: '',
 };
 
-export const AdminPackageForm = ({
+export const AdminEmployeeForm = ({
     isModalOpen,
     setIsModalOpen,
     editingPackage,
@@ -48,10 +48,10 @@ export const AdminPackageForm = ({
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         name === "duration" ?
-            setFormData((prev: PackageFormData) => ({ ...prev, [name]: Math.max(0, parseInt(value)) })) :
+            setFormData((prev: EmployeeFormData) => ({ ...prev, [name]: Math.max(0, parseInt(value)) })) :
             name === "price" ?
-                setFormData((prev: PackageFormData) => ({ ...prev, [name]: Math.max(0, parseFloat(value)) })) :
-                setFormData((prev: PackageFormData) => ({
+                setFormData((prev: EmployeeFormData) => ({ ...prev, [name]: Math.max(0, parseFloat(value)) })) :
+                setFormData((prev: EmployeeFormData) => ({
                     ...prev,
                     [name]: name === 'price' ? parseFloat(value) || 0 : value
                 }));
@@ -60,7 +60,7 @@ export const AdminPackageForm = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (editingPackage) {
-            const updatedPackage: PackageFormData = {
+            const updatedPackage: EmployeeFormData = {
                 ...formData,
                 id: editingPackage._id ? editingPackage._id : undefined
             };
@@ -116,7 +116,7 @@ export const AdminPackageForm = ({
             <Modal
                 open={isModalOpen}
                 onClose={handleCloseModal}
-                title={editingPackage ? 'Edit Package Form' : 'Add New Package Form'}
+                title={editingPackage ? 'Edit Package Form' : 'Add New Employee'}
             >
                 <form onSubmit={handleSubmit} className="space-y-6 p-4">
                     <TextField
@@ -146,7 +146,7 @@ export const AdminPackageForm = ({
                             if (file) {
                                 imageToBase64Mutate(file, {
                                     onSuccess: (base64Image) => {
-                                        setFormData((prev: PackageFormData) => ({
+                                        setFormData((prev: EmployeeFormData) => ({
                                             ...prev,
                                             image: base64Image
                                         }));

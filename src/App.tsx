@@ -1,7 +1,7 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { MainLayout, AdminLayout } from './layout'
-import { HomePage, AboutPage, LoginPage, RegisterPage, PackagesPage, DestinationsPage, ContactPage, DashboardPage, BookingsPage, AdminPackagesPage, AdminFeedbacksPage } from '@zenra/pages'
+import { HomePage, AboutPage, LoginPage, RegisterPage, PackagesPage, DestinationsPage, ContactPage, DashboardPage, BookingsPage, AdminEmployeePage, AdminFeedbacksPage } from '@zenra/pages'
 import { Navigate } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import { useSelector } from 'react-redux'
@@ -21,7 +21,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="bookings" element={<ProtectedRoute><BookingsPage /></ProtectedRoute>} />
-          <Route path="packages" element={<ProtectedRoute><AdminPackagesPage /></ProtectedRoute>} />
+          <Route path="packages" element={<ProtectedRoute><AdminEmployeePage /></ProtectedRoute>} />
           <Route path="feedbacks" element={<ProtectedRoute><AdminFeedbacksPage /></ProtectedRoute>} />
         </Route>
       </Routes>

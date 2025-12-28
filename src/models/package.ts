@@ -27,7 +27,7 @@ export interface PackageFilters {
   setPriceRange: (value: string) => void;
 }
 
-export interface PackageFormData {
+export interface EmployeeFormData {
   id?: any;
   title: string;
   description: string;
