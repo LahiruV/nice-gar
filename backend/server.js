@@ -10,7 +10,7 @@ const swaggerFile = require("./swagger-output.json");
 
 const authRoutes = require("./routes/auth");
 const commonRoutes = require("./routes/common");
-const packageRoutes = require("./routes/package");
+const employeeRoutes = require("./routes/employee");
 const feedbackRoutes = require("./routes/feedback");
 const bookingRoutes = require("./routes/bookings");
 
@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, "public"), {
 
 // === API Routes ===
 app.use("/api/auth", authRoutes);
-app.use("/api/packages", packageRoutes);
+app.use("/api/employees", employeeRoutes);
 app.use("/api/common", commonRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/booking", bookingRoutes);
