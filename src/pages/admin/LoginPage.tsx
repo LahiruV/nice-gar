@@ -1,7 +1,6 @@
 import { LoginForm } from '@zenra/components';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner'
 import { LoginCredentials } from '@zenra/models';
 import { useLogin } from '@zenra/services';
