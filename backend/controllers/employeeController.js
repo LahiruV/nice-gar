@@ -68,14 +68,29 @@ exports.updateEmployee = async (req, res) => {
     }
 };
 
-// "Soft-delete" an employee by setting isActive = 0
 exports.deleteEmployee = async (req, res) => {
     const { id } = req.params;
     if (!id) return res.status(400).json({ error: "Employee ID is required" });
 
     try {
-        await Employee.findByIdAndUpdate(id, { isActive: 0 });
+        await Employee.findByIdAndDelete(id);
         res.json({ message: "Employee deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.employeeLogin = async (req, res) => {
+    const { email, password, position } = req.body;
+    if (!email || !password || !position) {
+        return res.status(400).json({ error: "Missing login details" });
+    }
+    try {
+        const employee = await Employee.findOne({ email, password, position }).lean();
+        if (!employee) {
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
+        res.json({ message: "Login successful", employeeId: employee._id });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

@@ -60,7 +60,7 @@ export const AdminEmployeePage = () => {
     const handleDelete = (id: string) => {
         setIsDeleteDialogOpen(true);
         setTitle('Confirm Deletion');
-        setDescription('Are you sure you want to delete this package?');
+        setDescription('Are you sure you want to delete this employee?');
         setAgreeButtonText('Delete');
         setDisagreeButtonText('Cancel');
         setDelID(id);

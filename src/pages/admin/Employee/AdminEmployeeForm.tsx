@@ -160,17 +160,17 @@ export const AdminEmployeeForm = ({
                         }))}
                         fullWidth
                         required
+                        defaultValue=''
                     >
                         <MenuItem value="" style={{
                             color: 'red'
                         }}>
                             <em>None</em>
                         </MenuItem>
-                        <MenuItem value="Manager">Manager</MenuItem>
-                        <MenuItem value="Receptionist">Receptionist</MenuItem>
-                        <MenuItem value="Housekeeping">Housekeeping</MenuItem>
-                        <MenuItem value="Chef">Chef</MenuItem>
-                        <MenuItem value="Waiter">Waiter</MenuItem>
+                        <MenuItem value="Employee">Employee</MenuItem>
+                        <MenuItem value="General Manager">General Manager</MenuItem>
+                        <MenuItem value="Factory Manager">Factory Manager</MenuItem>
+                        <MenuItem value="LSO Officer">LSO Officer</MenuItem>
                     </Select>
 
                     <TextField
