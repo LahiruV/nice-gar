@@ -24,7 +24,7 @@ export const LoginPage = () => {
         dispatch(setUser(response.user));
         dispatch(setAuthenticated(true));
         toast.success('Login successful! Welcome back.');
-        navigate('/admin/bookings');
+        navigate('/admin/employees');
       },
       onError: (error) => {
         toast.error('Login failed. Please check your credentials and try again.');

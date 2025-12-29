@@ -2,29 +2,30 @@ import { LoginForm } from '@zenra/components';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner'
-import { LoginCredentials } from '@zenra/models';
-import { useLogin } from '@zenra/services';
+import { EmployeeLoginData } from '@zenra/models';
+import { useEmployee, useLogin } from '@zenra/services';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { useDispatch } from 'react-redux';
 import { setAuthenticated, setUser } from '@zenra/store';
 
-export const LoginPage = () => {
+export const EmployeeLoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { loginMutate } = useLogin();
+    const { employeeLoginMutate } = useEmployee();
 
     const handleLogin = async (email: string, password: string) => {
-        const payload: LoginCredentials = {
+        const payload: EmployeeLoginData = {
             email,
-            password
+            password,
+            position: 'Employee'
         };
 
-        loginMutate(payload, {
+        employeeLoginMutate(payload, {
             onSuccess: (response) => {
                 dispatch(setUser(response.user));
                 dispatch(setAuthenticated(true));
                 toast.success('Login successful! Welcome back.');
-                navigate('/admin/bookings');
+                navigate('/admin/employees');
             },
             onError: (error) => {
                 toast.error('Login failed. Please check your credentials and try again.');
@@ -65,12 +66,6 @@ export const LoginPage = () => {
                             <span>Back to Home</span>
                         </Link>
                         <h2 className="text-3xl font-bold text-gray-900">Login to Your Account</h2>
-                        <p className="mt-2 text-gray-600">
-                            Don't have an account?{' '}
-                            <Link to="/register" className="text-blue-600 hover:text-blue-500 font-medium">
-                                Sign Up
-                            </Link>
-                        </p>
                     </div>
                     <div className="bg-white p-8 rounded-lg shadow-lg">
                         <LoginForm onSubmit={handleLogin} />

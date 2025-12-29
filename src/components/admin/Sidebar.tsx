@@ -11,7 +11,7 @@ const navigation = [
   // { name: 'Feedbacks', icon: ChatBubbleBottomCenterIcon, path: '/admin/feedbacks' },
   // { name: 'Trip Advisor', icon: MapIcon, path: 'https://www.tripadvisor.com/', isNewTab: true },
   // { name: 'Booking.COM', icon: TagIcon, path: 'https://www.booking.com/?chal_t=1755768475537&force_referer=https%3A%2F%2Fwww.google.com%2F', isNewTab: true },
-  { name: 'Employee', icon: UserGroupIcon, path: '/admin/packages', isNewTab: false },
+  { name: 'Employee', icon: UserGroupIcon, path: '/admin/employees', isNewTab: false },
 
   // { name: 'Users', icon: UsersIcon, path: '/admin/users' },
   // { name: 'Payments', icon: BanknotesIcon, path: '/admin/payments' },

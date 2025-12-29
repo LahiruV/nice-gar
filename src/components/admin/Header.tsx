@@ -12,7 +12,7 @@ export const Header = ({ onMenuClick }: HeaderProps) => {
 
   const handleLogout = () => {
     persistor.purge();
-    navigate('/login');
+    navigate('/');
   };
 
   return (
