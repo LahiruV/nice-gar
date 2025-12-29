@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { EmployeeFormData } from '@zenra/models';
+import { EmployeeFormData, EmployeeLoginData } from '@zenra/models';
 import axios, { AxiosError } from 'axios';
 
 export const useEmployee = () => {
@@ -39,6 +39,19 @@ export const useEmployee = () => {
         mutationKey: ['employee-delete'],
     });
 
+    const { mutate: employeeLoginMutate, ...loginMutate } = useMutation({
+        mutationFn: async (payload: EmployeeLoginData) => {
+            const response = await axios.post<any>(
+                `${import.meta.env.VITE_API_URL}/employees/login`,
+                payload
+            );
+            return response.data;
+        },
+        onSuccess: (response: any) => response,
+        onError: (err: AxiosError) => err,
+        mutationKey: ['employee-login'],
+    });
+
     return {
         employeeAddMutate,
         ...addMutate,
@@ -46,6 +59,8 @@ export const useEmployee = () => {
         ...updateMutate,
         employeeDeleteMutate,
         ...deleteMutate,
+        employeeLoginMutate,
+        ...loginMutate,
     };
 };
 

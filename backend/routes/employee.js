@@ -7,5 +7,6 @@ router.get("/", controller.getEmployees);
 router.get("/all", controller.getAllEmployees);
 router.put("/update", controller.updateEmployee);
 router.delete("/delete/:id", controller.deleteEmployee);
+router.post("/login", controller.employeeLogin);
 
 module.exports = router;

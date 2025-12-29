@@ -36,3 +36,9 @@ export interface EmployeeFormData {
   position: string;
   image: string;
 }
+
+export interface EmployeeLoginData {
+  email: string;
+  password: string;
+  position: string;
+}
