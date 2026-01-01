@@ -1,1 +1,0 @@
-https://cdn.jsdelivr.net/gh/LahiruV/tour-gx@fed397302304b5bc38aa4ebb668ae3ae634a9f8b/src/i18n/locales/hi/packages.ts
