@@ -17,7 +17,10 @@ exports.addEmployee = async (req, res) => {
             position,
             image
         });
-
+        const checkEmailWithPosition = await Employee.findOne({ email, position }).lean();
+        if (checkEmailWithPosition) {
+            return res.status(400).json({ error: "Email already exists with this position" });
+        }
         const savedEmployee = await newEmployee.save();
         res.status(201).json({ message: "Employee added successfully", employeeId: savedEmployee._id });
     } catch (err) {
