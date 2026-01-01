@@ -4,9 +4,10 @@ import { motion } from 'framer-motion';
 import { toast } from 'sonner'
 import { LoginCredentials } from '@zenra/models';
 import { useLogin } from '@zenra/services';
-import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, FingerPrintIcon } from '@heroicons/react/24/outline';
 import { useDispatch } from 'react-redux';
 import { setAuthenticated, setUser } from '@zenra/store';
+import { HandThumbDownIcon } from '@heroicons/react/24/solid';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -58,11 +59,11 @@ export const LoginPage = () => {
         >
           <div className="text-center mb-8">
             <Link
-              to="/"
+              to="/employee-login"
               className="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors mb-4"
             >
-              <ArrowLeftIcon className="h-5 w-5 mr-2" />
-              <span>Back to Home</span>
+              <span>Employee Login Click Here</span>
+              <FingerPrintIcon className="h-5 w-5 ml-2" />
             </Link>
             <h2 className="text-3xl font-bold text-gray-900">Login to Your Account</h2>
             <p className="mt-2 text-gray-600">

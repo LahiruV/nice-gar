@@ -81,12 +81,12 @@ exports.deleteEmployee = async (req, res) => {
 };
 
 exports.employeeLogin = async (req, res) => {
-    const { email, password, position } = req.body;
-    if (!email || !password || !position) {
+    const { email, password } = req.body;
+    if (!email || !password) {
         return res.status(400).json({ error: "Missing login details" });
     }
     try {
-        const employee = await Employee.findOne({ email, password, position }).lean();
+        const employee = await Employee.findOne({ email, password }).lean();
         if (!employee) {
             return res.status(401).json({ error: "Invalid credentials" });
         }

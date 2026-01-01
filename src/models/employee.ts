@@ -40,5 +40,4 @@ export interface EmployeeFormData {
 export interface EmployeeLoginData {
   email: string;
   password: string;
-  position: string;
 }

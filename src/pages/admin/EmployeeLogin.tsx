@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner'
 import { EmployeeLoginData } from '@zenra/models';
-import { useEmployee, useLogin } from '@zenra/services';
-import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { useEmployee, } from '@zenra/services';
+import { FingerPrintIcon } from '@heroicons/react/24/outline';
 import { useDispatch } from 'react-redux';
 import { setAuthenticated, setUser } from '@zenra/store';
 
@@ -16,8 +16,7 @@ export const EmployeeLoginPage = () => {
     const handleLogin = async (email: string, password: string) => {
         const payload: EmployeeLoginData = {
             email,
-            password,
-            position: 'Employee'
+            password
         };
 
         employeeLoginMutate(payload, {
@@ -62,8 +61,8 @@ export const EmployeeLoginPage = () => {
                             to="/"
                             className="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors mb-4"
                         >
-                            <ArrowLeftIcon className="h-5 w-5 mr-2" />
-                            <span>Back to Home</span>
+                            <span>Back to Admin Login</span>
+                            <FingerPrintIcon className="h-5 w-5 ml-2" />
                         </Link>
                         <h2 className="text-3xl font-bold text-gray-900">Login to Your Account</h2>
                     </div>
