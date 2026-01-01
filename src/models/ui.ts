@@ -48,4 +48,5 @@ export interface TableProps<T> {
   defaultRowsPerPage?: number;
   hover?: boolean;
   className?: string;
+  resetPageTrigger?: number;
 }

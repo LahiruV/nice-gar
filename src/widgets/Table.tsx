@@ -9,33 +9,8 @@ import {
   Paper,
   TableSortLabel,
 } from '@mui/material';
+import { TableProps } from '@zenra/models';
 import { useEffect, useState } from 'react';
-
-export interface Column<T> {
-  id: string;
-  label: string;
-  render?: (row: T) => React.ReactNode;
-  sortable?: boolean;
-  align?: 'left' | 'right' | 'center';
-  width?: string | number;
-}
-
-interface TableProps<T> {
-  columns: Column<T>[];
-  data: T[];
-  keyExtractor: (row: T) => string | number;
-  pagination?: boolean;
-  defaultSort?: {
-    field: string;
-    direction: 'asc' | 'desc';
-  };
-  onSort?: (field: string, direction: 'asc' | 'desc') => void;
-  rowsPerPageOptions?: number[];
-  defaultRowsPerPage?: number;
-  hover?: boolean;
-  className?: string;
-  resetPageTrigger?: number;
-}
 
 export function Table<T>({
   columns,
