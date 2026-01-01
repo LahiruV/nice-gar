@@ -90,7 +90,7 @@ exports.employeeLogin = async (req, res) => {
         if (!employee) {
             return res.status(401).json({ error: "Invalid credentials" });
         }
-        res.json({ message: "Login successful", employeeId: employee._id });
+        res.json({ message: "Login successful", employeeId: employee._id, employeePosition: employee.position });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
