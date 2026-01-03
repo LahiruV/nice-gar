@@ -3,7 +3,7 @@ const Leave = require("../models/leaveModel");
 // Add a new leave request
 exports.addLeaveRequest = async (req, res) => {
     const { employeeId, startDate, endDate, reason, status1, status2, status3 } = req.body;
-    if (!employeeId || !startDate || !endDate || !reason || status1 === undefined || status2 === undefined || status3 === undefined) {
+    if (!employeeId || !startDate || !endDate || !reason || !status1 || !status2 || !status3) {
         return res.status(400).json({ error: "Missing leave request details" });
     }
     try {
@@ -70,7 +70,7 @@ exports.getLeaveRequestsByEmployee = async (req, res) => {
 // Update an leave request
 exports.updateLeaveRequest = async (req, res) => {
     const { id, employeeId, startDate, endDate, reason, status1, status2, status3 } = req.body;
-    if (!id || !employeeId || !startDate || !endDate || !reason || status1 === undefined || status2 === undefined || status3 === undefined) {
+    if (!id || !employeeId || !startDate || !endDate || !reason || !status1 || !status2 || !status3) {
         return res.status(400).json({ error: "Missing leave request details" });
     }
 

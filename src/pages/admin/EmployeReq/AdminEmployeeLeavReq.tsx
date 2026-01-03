@@ -15,9 +15,9 @@ const initialFormData: EmployeeLeaveRequestFormData = {
     startDate: '',
     endDate: '',
     reason: '',
-    status1: false,
-    status2: false,
-    status3: false,
+    status1: 1,
+    status2: 1,
+    status3: 1,
 };
 
 export const AdminEmployeeLeavReq = () => {

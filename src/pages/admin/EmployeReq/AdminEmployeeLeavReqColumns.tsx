@@ -68,11 +68,13 @@ export const leaveReqColumns = ({
             id: "startDate",
             label: "Start Date",
             align: "right",
+            render: (pkg) => new Date(pkg.startDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-'),
         },
         {
             id: "endDate",
             label: "End Date",
             align: "right",
+            render: (pkg) => new Date(pkg.endDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-'),
         },
         {
             id: "reason",
@@ -83,7 +85,28 @@ export const leaveReqColumns = ({
             id: "status",
             label: "Status",
             align: "right",
-            render: (pkg) => (`${pkg.status1}, ${pkg.status2}, ${pkg.status3}`),
+            render: (pkg) => {
+                const statuses = [pkg.status1, pkg.status2, pkg.status3];
+                let statusText = "Unknown";
+                let chipClass = "bg-gray-100 text-gray-800";
+
+                if (statuses.some(status => status === 0)) {
+                    statusText = "Rejected";
+                    chipClass = "bg-red-100 text-red-800";
+                } else if (statuses.every(status => status === 2)) {
+                    statusText = "Accepted";
+                    chipClass = "bg-green-100 text-green-800";
+                } else if (statuses.some(status => status === 1)) {
+                    statusText = "Pending";
+                    chipClass = "bg-yellow-100 text-yellow-800";
+                }
+
+                return (
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${chipClass}`}>
+                        {statusText}
+                    </span>
+                );
+            },
         },
         {
             id: "actions",

@@ -25,9 +25,9 @@ const initialFormData: EmployeeLeaveRequestFormData = {
     startDate: '',
     endDate: '',
     reason: '',
-    status1: false,
-    status2: false,
-    status3: false,
+    status1: 1,
+    status2: 1,
+    status3: 1,
 };
 
 export const AdminEmployeeLeavReqForm = ({
@@ -209,7 +209,28 @@ export const AdminEmployeeLeavReqForm = ({
                             </div>
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-900">Status</h3>
-                                <p className="text-gray-700">{`${dataView.status1}, ${dataView.status2}, ${dataView.status3}`}</p>
+                                {(() => {
+                                    const statuses = [dataView.status1, dataView.status2, dataView.status3];
+                                    let statusText = "Unknown";
+                                    let chipClass = "bg-gray-100 text-gray-800";
+
+                                    if (statuses.some(status => status === 0)) {
+                                        statusText = "Rejected";
+                                        chipClass = "bg-red-100 text-red-800";
+                                    } else if (statuses.every(status => status === 2)) {
+                                        statusText = "Accepted";
+                                        chipClass = "bg-green-100 text-green-800";
+                                    } else if (statuses.some(status => status === 1)) {
+                                        statusText = "Pending";
+                                        chipClass = "bg-yellow-100 text-yellow-800";
+                                    }
+
+                                    return (
+                                        <span className={`px-3 py-1 rounded-full text-md font-medium ${chipClass}`}>
+                                            {statusText}
+                                        </span>
+                                    );
+                                })()}
                             </div>
                         </div>
 

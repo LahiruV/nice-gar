@@ -19,16 +19,16 @@ const leaveSchema = new mongoose.Schema({
         required: true
     },
     status1: {
-        type: Boolean,
-        default: false
+        type: Number,
+        default: 1
     },
     status2: {
-        type: Boolean,
-        default: false
+        type: Number,
+        default: 1
     },
     status3: {
-        type: Boolean,
-        default: false
+        type: Number,
+        default: 1
     }
 });
 
