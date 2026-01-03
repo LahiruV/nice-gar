@@ -4,7 +4,7 @@ import { AlertDialogSlide, Button, CircularIndeterminate, sortArray, SortConfig,
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { EmployeeLeaveRequest, EmployeeLeaveRequestFormData } from '@zenra/models';
 import { toast } from 'sonner';
-import { getEmployees, useEmployee } from '@zenra/services';
+import { getLeaveRequests, useLeaveRequest } from '@zenra/services';
 import { AdminEmployeeLeavReqForm } from './AdminEmployeeLeavReqForm';
 import { leaveReqColumns } from './AdminEmployeeLeavReqColumns';
 
@@ -13,17 +13,19 @@ const initialFormData: EmployeeLeaveRequestFormData = {
     startDate: '',
     endDate: '',
     reason: '',
-    status: 'Pending',
+    status1: false,
+    status2: false,
+    status3: false,
 };
 
 export const AdminEmployeeLeavReq = () => {
 
-    const { employeeDeleteMutate } = useEmployee();
-    const { response: employees, refetch, isFetching } = getEmployees(true);
+    const { leaveReqDeleteMutate } = useLeaveRequest();
+    const { response: tableData, refetch, isFetching } = getLeaveRequests(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-    const [editingEmployee, setEditingEmployee] = useState<EmployeeLeaveRequest | null>(null);
-    const [viewingEmployee, setViewingEmployee] = useState<EmployeeLeaveRequest | null>(null);
+    const [editData, setEditData] = useState<EmployeeLeaveRequest | null>(null);
+    const [dataView, setDataView] = useState<EmployeeLeaveRequest | null>(null);
     const [formData, setFormData] = useState<EmployeeLeaveRequestFormData>(initialFormData);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
@@ -36,12 +38,12 @@ export const AdminEmployeeLeavReq = () => {
         field: string;
         direction: 'asc' | 'desc';
     }>({
-        field: 'firstName',
+        field: 'employeeName',
         direction: 'asc',
     });
 
     const handleEdit = (data: EmployeeLeaveRequest) => {
-        setEditingEmployee(data);
+        setEditData(data);
         setFormData({
             id: data._id,
             employeeId: data.employeeId,
@@ -49,7 +51,9 @@ export const AdminEmployeeLeavReq = () => {
             startDate: data.startDate,
             endDate: data.endDate,
             reason: data.reason,
-            status: data.status,
+            status1: data.status1,
+            status2: data.status2,
+            status3: data.status3,
         });
         setIsModalOpen(true);
     };
@@ -57,19 +61,19 @@ export const AdminEmployeeLeavReq = () => {
     const handleDelete = (id: string) => {
         setIsDeleteDialogOpen(true);
         setTitle('Confirm Deletion');
-        setDescription('Are you sure you want to delete this employee?');
+        setDescription('Are you sure you want to delete this leave request?');
         setAgreeButtonText('Delete');
         setDisagreeButtonText('Cancel');
         setDelID(id);
     };
 
     const handleView = (data: EmployeeLeaveRequest) => {
-        setViewingEmployee(data);
+        setDataView(data);
         setIsViewModalOpen(true);
     };
 
     const handleAddNew = () => {
-        setEditingEmployee(null);
+        setEditData(null);
         setFormData(initialFormData);
         setIsModalOpen(true);
     };
@@ -78,16 +82,16 @@ export const AdminEmployeeLeavReq = () => {
 
     const handleDeleteConfirmed = () => {
         if (delID) {
-            // employeeDeleteMutate(delID, {
-            //     onSuccess: () => {
-            //         refetch();
-            //         toast.success('Employee deleted successfully!');
-            //     },
-            //     onError: (error) => {
-            //         toast.error('Failed to delete employee. Please try again.');
-            //         console.error('Delete failed:', error);
-            //     },
-            // });
+            leaveReqDeleteMutate(delID, {
+                onSuccess: () => {
+                    refetch();
+                    toast.success('Leave request deleted successfully!');
+                },
+                onError: (error) => {
+                    toast.error('Failed to delete leave request. Please try again.');
+                    console.error('Delete failed:', error);
+                },
+            });
         }
         setIsDeleteDialogOpen(false);
     };
@@ -96,10 +100,10 @@ export const AdminEmployeeLeavReq = () => {
         toast.info('Deletion cancelled');
     };
 
-    const sortedEmployees = useMemo(() => {
-        const data = Array.isArray(employees?.data) ? employees?.data : [];
+    const sortedValue = useMemo(() => {
+        const data = Array.isArray(tableData?.data) ? tableData?.data : [];
         return sortArray(data, sortConfig as SortConfig<EmployeeLeaveRequest>);
-    }, [employees, sortConfig]);
+    }, [tableData, sortConfig]);
 
     const handleSort = (field: string, direction: 'asc' | 'desc') => setSortConfig({ field, direction });
 
@@ -121,7 +125,7 @@ export const AdminEmployeeLeavReq = () => {
                     {isFetching ? <CircularIndeterminate /> :
                         <Table
                             columns={leaveReqColumns({ handleView, handleEdit, handleDelete })}
-                            data={sortedEmployees || []}
+                            data={sortedValue || []}
                             keyExtractor={(data) => data._id ?? ''}
                             defaultSort={sortConfig}
                             onSort={handleSort}
@@ -133,12 +137,12 @@ export const AdminEmployeeLeavReq = () => {
                         refetch={refetch}
                         isModalOpen={isModalOpen}
                         setIsModalOpen={setIsModalOpen}
-                        editData={editingEmployee}
-                        setEditingData={setEditingEmployee}
+                        editData={editData}
+                        setEditingData={setEditData}
                         isViewModalOpen={isViewModalOpen}
                         setIsViewModalOpen={setIsViewModalOpen}
-                        dataView={viewingEmployee}
-                        setDataView={setViewingEmployee}
+                        dataView={dataView}
+                        setDataView={setDataView}
                         formData={formData}
                         setFormData={setFormData}
                     />

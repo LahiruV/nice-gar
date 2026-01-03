@@ -49,7 +49,9 @@ export interface EmployeeLeaveRequestFormData {
   startDate: string;
   endDate: string;
   reason: string;
-  status: 'Pending' | 'Approved' | 'Rejected';
+  status1: boolean;
+  status2: boolean;
+  status3: boolean;
 }
 
 export interface EmployeeLeaveRequest {
@@ -59,5 +61,7 @@ export interface EmployeeLeaveRequest {
   startDate: string;
   endDate: string;
   reason: string;
-  status: 'Pending' | 'Approved' | 'Rejected';
+  status1: boolean;
+  status2: boolean;
+  status3: boolean;
 } 

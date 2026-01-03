@@ -83,6 +83,7 @@ export const leaveReqColumns = ({
             id: "status",
             label: "Status",
             align: "right",
+            render: (pkg) => (`${pkg.status1}, ${pkg.status2}, ${pkg.status3}`),
         },
         {
             id: "actions",

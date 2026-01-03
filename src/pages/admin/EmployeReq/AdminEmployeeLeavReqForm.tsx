@@ -1,6 +1,8 @@
 import { TextField, Button, Modal } from '@zenra/widgets';
 import { PencilIcon, } from '@heroicons/react/24/outline';
 import { EmployeeLeaveRequest, EmployeeLeaveRequestFormData } from '@zenra/models';
+import { toast } from 'sonner';
+import { useLeaveRequest } from '@zenra/services';
 
 interface PackageFormProps {
     isModalOpen: boolean;
@@ -21,7 +23,9 @@ const initialFormData: EmployeeLeaveRequestFormData = {
     startDate: '',
     endDate: '',
     reason: '',
-    status: 'Pending',
+    status1: false,
+    status2: false,
+    status3: false,
 };
 
 export const AdminEmployeeLeavReqForm = ({
@@ -37,7 +41,7 @@ export const AdminEmployeeLeavReqForm = ({
     refetch,
 }: PackageFormProps) => {
 
-    // const { employeeAddMutate, employeeUpdateMutate } = useEmployee();
+    const { leaveReqAddMutate, leaveReqUpdateMutate } = useLeaveRequest();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -54,29 +58,29 @@ export const AdminEmployeeLeavReqForm = ({
                 ...formData,
                 id: editData._id ? editData._id : undefined
             };
-            // employeeUpdateMutate(updatedEmployee, {
-            //     onSuccess: () => {
-            //         refetch();
-            //         setFormData(initialFormData);
-            //         toast.success('EmployeeLeaveRequest updated successfully!');
-            //     },
-            //     onError: (error) => {
-            //         toast.error('EmployeeLeaveRequest update failed');
-            //         console.error('EmployeeLeaveRequest update failed:', error);
-            //     }
-            // });
+            leaveReqUpdateMutate(updatedObj, {
+                onSuccess: () => {
+                    refetch();
+                    setFormData(initialFormData);
+                    toast.success('Leave request updated successfully!');
+                },
+                onError: (error: any) => {
+                    toast.error('Leave request update failed');
+                    console.error('Leave request update failed:', error);
+                }
+            });
         } else {
-            // employeeAddMutate(formData, {
-            //     onSuccess: () => {
-            //         refetch();
-            //         setFormData(initialFormData);
-            //         toast.success('EmployeeLeaveRequest added successfully!');
-            //     },
-            //     onError: (error) => {
-            //         toast.error('EmployeeLeaveRequest addition failed');
-            //         console.error('EmployeeLeaveRequest addition failed:', error);
-            //     }
-            // });
+            leaveReqAddMutate(formData, {
+                onSuccess: () => {
+                    refetch();
+                    setFormData(initialFormData);
+                    toast.success('Leave request added successfully!');
+                },
+                onError: (error: any) => {
+                    toast.error('Leave request addition failed');
+                    console.error('Leave request addition failed:', error);
+                }
+            });
         }
         handleCloseModal();
     };
@@ -89,7 +93,9 @@ export const AdminEmployeeLeavReqForm = ({
             startDate: data.startDate,
             endDate: data.endDate,
             reason: data.reason,
-            status: data.status,
+            status1: data.status1,
+            status2: data.status2,
+            status3: data.status3,
         });
         setIsModalOpen(true);
     };
@@ -180,7 +186,7 @@ export const AdminEmployeeLeavReqForm = ({
                             </div>
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-900">Status</h3>
-                                <p className="text-gray-700">{dataView.status}</p>
+                                <p className="text-gray-700">{`${dataView.status1}, ${dataView.status2}, ${dataView.status3}`}</p>
                             </div>
                         </div>
 
