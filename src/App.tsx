@@ -1,7 +1,7 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AdminLayout } from './layout'
-import { LoginPage, RegisterPage, AdminEmployeePage, EmployeeLoginPage } from '@zenra/pages'
+import { LoginPage, RegisterPage, AdminEmployeePage, EmployeeLoginPage, AdminEmployeeLeavReq } from '@zenra/pages'
 import { Navigate } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import { useSelector } from 'react-redux'
@@ -21,6 +21,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="employees" element={<ProtectedRoute><AdminEmployeePage /></ProtectedRoute>} />
+          <Route path="leave-requests" element={<ProtectedRoute><AdminEmployeeLeavReq /></ProtectedRoute>} />
         </Route>
       </Routes>
       <Toaster richColors closeButton />

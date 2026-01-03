@@ -6,7 +6,7 @@ import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 const navigation = [
   { name: 'Employee', icon: UserGroupIcon, path: '/admin/employees', isNewTab: false },
-  { name: 'My Leave', icon: UserGroupIcon, path: 'https://example.com/my-leave', isNewTab: true },
+  { name: 'My Leave', icon: UserGroupIcon, path: '/admin/leave-requests', isNewTab: false },
 ];
 
 interface SidebarProps {

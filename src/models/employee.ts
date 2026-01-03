@@ -41,3 +41,23 @@ export interface EmployeeLoginData {
   email: string;
   password: string;
 }
+
+export interface EmployeeLeaveRequestFormData {
+  id?: any;
+  employeeId: string;
+  employeeName?: string;
+  startDate: string;
+  endDate: string;
+  reason: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+}
+
+export interface EmployeeLeaveRequest {
+  _id?: any;
+  employeeId: string;
+  employeeName: string;
+  startDate: string;
+  endDate: string;
+  reason: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+} 

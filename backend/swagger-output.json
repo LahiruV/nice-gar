@@ -119,7 +119,7 @@
         }
       }
     },
-    "/api/packages/add": {
+    "/api/employees/add": {
       "post": {
         "description": "",
         "parameters": [
@@ -129,25 +129,25 @@
             "schema": {
               "type": "object",
               "properties": {
-                "title": {
+                "firstName": {
                   "example": "any"
                 },
-                "description": {
+                "lastName": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "phone": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "position": {
                   "example": "any"
                 },
                 "image": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "duration": {
-                  "example": "any"
-                },
-                "groupSize": {
-                  "example": "any"
-                },
-                "startDate": {
                   "example": "any"
                 }
               }
@@ -167,7 +167,7 @@
         }
       }
     },
-    "/api/packages/": {
+    "/api/employees/": {
       "get": {
         "description": "",
         "responses": {
@@ -180,7 +180,7 @@
         }
       }
     },
-    "/api/packages/all": {
+    "/api/employees/all": {
       "get": {
         "description": "",
         "responses": {
@@ -193,7 +193,7 @@
         }
       }
     },
-    "/api/packages/update": {
+    "/api/employees/update": {
       "put": {
         "description": "",
         "parameters": [
@@ -204,179 +204,6 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "example": "any"
-                },
-                "title": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "image": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "duration": {
-                  "example": "any"
-                },
-                "groupSize": {
-                  "example": "any"
-                },
-                "startDate": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/packages/delete/{id}": {
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/common/convert-image": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/feedback/add": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "phone": {
-                  "example": "any"
-                },
-                "message": {
-                  "example": "any"
-                },
-                "serviceRating": {
-                  "example": "any"
-                },
-                "country": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/feedback/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/feedback/delete/{id}": {
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/booking/add": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "packageId": {
                   "example": "any"
                 },
                 "firstName": {
@@ -391,119 +218,13 @@
                 "phone": {
                   "example": "any"
                 },
-                "travelDate": {
+                "password": {
                   "example": "any"
                 },
-                "adults": {
+                "position": {
                   "example": "any"
                 },
-                "children": {
-                  "example": "any"
-                },
-                "mealPlan": {
-                  "example": "any"
-                },
-                "includeTransport": {
-                  "example": "any"
-                },
-                "includeAccommodation": {
-                  "example": "any"
-                },
-                "specialRequests": {
-                  "example": "any"
-                },
-                "increasePrice": {
-                  "example": "any"
-                },
-                "discount": {
-                  "example": "any"
-                },
-                "status": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/booking/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/booking/dashboard": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/booking/recent": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/booking/allBookings": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/booking/update": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                },
-                "updateFields": {
+                "image": {
                   "example": "any"
                 }
               }
@@ -523,43 +244,7 @@
         }
       }
     },
-    "/api/booking/status/{id}": {
-      "patch": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/booking/delete/{id}": {
+    "/api/employees/delete/{id}": {
       "delete": {
         "description": "",
         "parameters": [
@@ -570,6 +255,58 @@
             "type": "string"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/employees/login": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/convert-image": {
+      "post": {
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
