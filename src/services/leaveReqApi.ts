@@ -6,37 +6,37 @@ export const useLeaveRequest = () => {
     const { mutate: leaveReqAddMutate, ...addMutate } = useMutation({
         mutationFn: async (payload: EmployeeLeaveRequestFormData) => {
             const response = await axios.post<EmployeeLeaveRequestFormData>(
-                `${import.meta.env.VITE_API_URL}/leave-requests/add`,
+                `${import.meta.env.VITE_API_URL}/leaves/add`,
                 payload
             );
             return response.data;
         },
         onSuccess: (response: EmployeeLeaveRequestFormData) => response,
         onError: (err: AxiosError) => err,
-        mutationKey: ['leave-requests-add'],
+        mutationKey: ['leaves-add'],
     });
 
     const { mutate: leaveReqUpdateMutate, ...updateMutate } = useMutation({
         mutationFn: async (payload: EmployeeLeaveRequestFormData) => {
             const response = await axios.put<EmployeeLeaveRequestFormData>(
-                `${import.meta.env.VITE_API_URL}/leave-requests/update`,
+                `${import.meta.env.VITE_API_URL}/leaves/update`,
                 payload
             );
             return response.data;
         },
         onSuccess: (response: EmployeeLeaveRequestFormData) => response,
         onError: (err: AxiosError) => err,
-        mutationKey: ['leave-requests-update'],
+        mutationKey: ['leaves-update'],
     });
 
     const { mutate: leaveReqDeleteMutate, ...deleteMutate } = useMutation({
         mutationFn: async (id: string) => {
-            const response = await axios.delete(`${import.meta.env.VITE_API_URL}/leave-requests/delete/${id}`);
+            const response = await axios.delete(`${import.meta.env.VITE_API_URL}/leaves/delete/${id}`);
             return response.data;
         },
         onSuccess: (response: EmployeeLeaveRequestFormData) => response,
         onError: (err: AxiosError) => err,
-        mutationKey: ['leave-requests-delete'],
+        mutationKey: ['leaves-delete'],
     });
 
     return {
@@ -51,11 +51,11 @@ export const useLeaveRequest = () => {
 
 export const getLeaveRequests = (isExecute: boolean) => {
     const fetch = async () => {
-        const data = await axios.get<EmployeeLeaveRequest>(`${import.meta.env.VITE_API_URL}/leave-requests`);
+        const data = await axios.get<EmployeeLeaveRequest>(`${import.meta.env.VITE_API_URL}/leaves`);
         return data;
     };
     const { data: response, status, error, refetch, isFetching } = useQuery({
-        queryKey: ['get-leave-requests'],
+        queryKey: ['get-leaves'],
         queryFn: () => fetch(),
         enabled: isExecute,
         refetchOnMount: 'always',

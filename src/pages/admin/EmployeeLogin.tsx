@@ -6,7 +6,7 @@ import { EmployeeLoginData } from '@zenra/models';
 import { useEmployee, } from '@zenra/services';
 import { FingerPrintIcon } from '@heroicons/react/24/outline';
 import { useDispatch } from 'react-redux';
-import { setAuthenticated, setUser } from '@zenra/store';
+import { setAuthenticated, setLoggedEmployee } from '@zenra/store';
 
 export const EmployeeLoginPage = () => {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ export const EmployeeLoginPage = () => {
 
         employeeLoginMutate(payload, {
             onSuccess: (response) => {
-                dispatch(setUser(response.user));
+                dispatch(setLoggedEmployee(response));
                 dispatch(setAuthenticated(true));
                 toast.success('Login successful! Welcome back.');
                 navigate('/admin/employees');

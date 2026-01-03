@@ -3,6 +3,10 @@ import { User } from '@zenra/models';
 
 interface AuthState {
   user: User | null;
+  loggedEmployee: {
+    employeeId: string;
+    employeePosition: string;
+  } | null;
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
@@ -10,6 +14,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: null,
+  loggedEmployee: null,
   isAuthenticated: false,
   loading: false,
   error: null,
@@ -22,6 +27,9 @@ const authSlice = createSlice({
     setUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
     },
+    setLoggedEmployee: (state, action: PayloadAction<{ employeeId: string; employeePosition: string } | null>) => {
+      state.loggedEmployee = action.payload;
+    },
     setAuthenticated: (state, action: PayloadAction<boolean>) => {
       state.isAuthenticated = action.payload;
     },
@@ -33,11 +41,12 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.user = null;
+      state.loggedEmployee = null;
       state.isAuthenticated = false;
       state.error = null;
     },
   },
 });
 
-export const { setUser, setLoading, setError, logout, setAuthenticated } = authSlice.actions;
+export const { setUser, setLoading, setError, logout, setAuthenticated, setLoggedEmployee } = authSlice.actions;
 export default authSlice.reducer;

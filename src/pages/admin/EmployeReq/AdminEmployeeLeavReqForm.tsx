@@ -3,6 +3,8 @@ import { PencilIcon, } from '@heroicons/react/24/outline';
 import { EmployeeLeaveRequest, EmployeeLeaveRequestFormData } from '@zenra/models';
 import { toast } from 'sonner';
 import { useLeaveRequest } from '@zenra/services';
+import { useSelector } from 'react-redux';
+import { RootState } from '@zenra/store';
 
 interface PackageFormProps {
     isModalOpen: boolean;
@@ -42,6 +44,7 @@ export const AdminEmployeeLeavReqForm = ({
 }: PackageFormProps) => {
 
     const { leaveReqAddMutate, leaveReqUpdateMutate } = useLeaveRequest();
+    const { loggedEmployee } = useSelector((state: RootState) => state.auth);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -53,6 +56,22 @@ export const AdminEmployeeLeavReqForm = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const startDate = new Date(formData.startDate);
+        startDate.setHours(0, 0, 0, 0);
+        if (startDate < today) {
+            toast.error('Start date cannot be in the past');
+            return;
+        }
+        const endDate = new Date(formData.endDate);
+        endDate.setHours(0, 0, 0, 0);
+        if (endDate < startDate) {
+            toast.error('End date cannot be before start date');
+            return;
+        }
+
         if (editData) {
             const updatedObj: EmployeeLeaveRequestFormData = {
                 ...formData,
@@ -70,7 +89,11 @@ export const AdminEmployeeLeavReqForm = ({
                 }
             });
         } else {
-            leaveReqAddMutate(formData, {
+            const addObj: EmployeeLeaveRequestFormData = {
+                ...formData,
+                employeeId: loggedEmployee ? loggedEmployee.employeeId : '',
+            };
+            leaveReqAddMutate(addObj, {
                 onSuccess: () => {
                     refetch();
                     setFormData(initialFormData);
