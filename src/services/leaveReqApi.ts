@@ -69,3 +69,24 @@ export const getLeaveRequests = (isExecute: boolean) => {
         isFetching
     };
 };
+
+export const getLeaveRequestsByEmployee = (isExecute: boolean, employeeId: string) => {
+    const fetch = async () => {
+        const data = await axios.get<EmployeeLeaveRequest>(`${import.meta.env.VITE_API_URL}/leaves/employee/${employeeId}`);
+        return data;
+    };
+    const { data: response, status, error, refetch, isFetching } = useQuery({
+        queryKey: ['get-leaves-employee', employeeId],
+        queryFn: () => fetch(),
+        enabled: isExecute,
+        refetchOnMount: 'always',
+        refetchOnWindowFocus: true,
+    });
+    return {
+        response,
+        status,
+        error,
+        refetch,
+        isFetching
+    };
+};

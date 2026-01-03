@@ -4,18 +4,32 @@ import { RootState } from '@zenra/store';
 import { useSelector } from 'react-redux';
 import { UserGroupIcon } from '@heroicons/react/24/solid';
 
-const navigation = [
-  { name: 'Employee', icon: UserGroupIcon, path: '/admin/employees', isNewTab: false },
-  { name: 'My Leave', icon: UserGroupIcon, path: '/admin/leave-requests', isNewTab: false },
-];
-
 interface SidebarProps {
   isOpen: boolean;
 }
 
+interface NavItem {
+  name: string;
+  icon: React.ElementType;
+  path: string;
+  isNewTab: boolean;
+}
+
 export const Sidebar = ({ isOpen }: SidebarProps) => {
   const location = useLocation();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, loggedEmployee } = useSelector((state: RootState) => state.auth);
+
+  const navigation: NavItem[] = [
+    ...(loggedEmployee === null
+      ? [
+        { name: 'Employee', icon: UserGroupIcon, path: '/admin/employees', isNewTab: false },
+      ]
+      : []),
+
+    ...(loggedEmployee?.employeePosition === 'Employee'
+      ? [{ name: 'My Leave', icon: UserGroupIcon, path: '/admin/leave-requests', isNewTab: false }]
+      : []),
+  ];
   return (
     <aside
       className={`fixed top-0 left-0 z-40 h-screen transition-transform ${isOpen ? 'translate-x-0' : '-translate-x-full'

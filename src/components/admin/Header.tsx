@@ -1,5 +1,5 @@
 import { Bars3Icon, BellIcon } from '@heroicons/react/24/outline';
-import { persistor } from '@zenra/store';
+import { logout, persistor, store } from '@zenra/store';
 import { Button } from '@zenra/widgets';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,8 +10,23 @@ interface HeaderProps {
 export const Header = ({ onMenuClick }: HeaderProps) => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    persistor.purge();
+
+  const handleLogout = async () => {
+    // 1) clear redux state
+    store.dispatch(logout());
+
+    // 2) stop persisting while we wipe
+    await persistor.pause();
+
+    // 3) wipe persisted storage
+    await persistor.purge();
+
+    // 4) (optional but helps) remove the persist root key explicitly
+    localStorage.removeItem('persist:root');
+
+    // 5) continue (optional)
+    await persistor.flush();
+
     navigate('/');
   };
 

@@ -4,9 +4,11 @@ import { AlertDialogSlide, Button, CircularIndeterminate, sortArray, SortConfig,
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { EmployeeLeaveRequest, EmployeeLeaveRequestFormData } from '@zenra/models';
 import { toast } from 'sonner';
-import { getLeaveRequests, useLeaveRequest } from '@zenra/services';
+import { getLeaveRequests, getLeaveRequestsByEmployee, useLeaveRequest } from '@zenra/services';
 import { AdminEmployeeLeavReqForm } from './AdminEmployeeLeavReqForm';
 import { leaveReqColumns } from './AdminEmployeeLeavReqColumns';
+import { useSelector } from 'react-redux';
+import { RootState } from '@zenra/store';
 
 const initialFormData: EmployeeLeaveRequestFormData = {
     employeeId: '',
@@ -19,9 +21,9 @@ const initialFormData: EmployeeLeaveRequestFormData = {
 };
 
 export const AdminEmployeeLeavReq = () => {
-
+    const { loggedEmployee } = useSelector((state: RootState) => state.auth);
     const { leaveReqDeleteMutate } = useLeaveRequest();
-    const { response: tableData, refetch, isFetching } = getLeaveRequests(true);
+    const { response: tableData, refetch, isFetching } = getLeaveRequestsByEmployee(true, loggedEmployee ? loggedEmployee.employeeId : '');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [editData, setEditData] = useState<EmployeeLeaveRequest | null>(null);

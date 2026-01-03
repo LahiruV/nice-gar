@@ -24,7 +24,9 @@ export const EmployeeLoginPage = () => {
                 dispatch(setLoggedEmployee(response));
                 dispatch(setAuthenticated(true));
                 toast.success('Login successful! Welcome back.');
-                navigate('/admin/employees');
+                if (response.employeePosition === 'Employee') {
+                    navigate('/admin/leave-requests');
+                }
             },
             onError: (error) => {
                 toast.error('Login failed. Please check your credentials and try again.');

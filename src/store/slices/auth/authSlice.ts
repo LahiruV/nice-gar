@@ -44,6 +44,7 @@ const authSlice = createSlice({
       state.loggedEmployee = null;
       state.isAuthenticated = false;
       state.error = null;
+      state.loading = false;
     },
   },
 });
