@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { MainLayout, AdminLayout } from './layout'
+import { AdminLayout } from './layout'
 import { LoginPage, RegisterPage, AdminEmployeePage, EmployeeLoginPage } from '@zenra/pages'
 import { Navigate } from 'react-router-dom'
 import { Toaster } from 'sonner'
