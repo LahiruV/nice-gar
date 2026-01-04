@@ -4,10 +4,9 @@ import { motion } from 'framer-motion';
 import { toast } from 'sonner'
 import { LoginCredentials } from '@zenra/models';
 import { useLogin } from '@zenra/services';
-import { ArrowLeftIcon, FingerPrintIcon } from '@heroicons/react/24/outline';
+import { FingerPrintIcon } from '@heroicons/react/24/outline';
 import { useDispatch } from 'react-redux';
 import { setAuthenticated, setUser } from '@zenra/store';
-import { HandThumbDownIcon } from '@heroicons/react/24/solid';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
