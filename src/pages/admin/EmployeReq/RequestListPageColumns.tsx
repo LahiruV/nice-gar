@@ -15,6 +15,58 @@ interface RequestListPageColumnsProps {
  * EmployeeActions Component
  * Handles action buttons for a single employee row
  */
+const isPending = (v: number) => v === 1;
+const isAccepted = (v: number) => v === 2;
+// const isRejected = (v: number) => v === 3;
+
+type Approver = 'HR' | 'GM' | 'FACTORY' | 'LSO' | 'NONE';
+
+const getApprover = (loggedEmployee: { employeePosition: string } | null): Approver => {
+    if (loggedEmployee === null) return 'HR';
+    switch (loggedEmployee.employeePosition) {
+        case 'General Manager':
+            return 'GM';
+        case 'Factory Manager':
+            return 'FACTORY';
+        case 'LSO Officer':
+            return 'LSO';
+        default:
+            return 'NONE';
+    }
+};
+
+const canAct = (pkg: EmployeeLeaveRequest, loggedEmployee: { employeePosition: string } | null) => {
+    const who = getApprover(loggedEmployee);
+    if (who === 'NONE') return false;
+
+    const s1 = pkg.status1;
+    const s2 = pkg.status2; // GM
+    const s3 = pkg.status3; // Factory
+    const s4 = pkg.status4; // LSO
+
+    switch (who) {
+        case 'HR':
+            // HR can act only if downstream approvals haven't started
+            return isPending(s2) && isPending(s3) && isPending(s4);
+
+        case 'GM':
+            // GM can act only after HR accepted, and downstream not started
+            return isAccepted(s1) && isPending(s3) && isPending(s4);
+
+        case 'FACTORY':
+            // Factory can act only after HR+GM accepted, and LSO not started
+            // This allows Factory to toggle 2 <-> 3 while s4 is still pending (1)
+            return isAccepted(s1) && isAccepted(s2) && isPending(s4);
+
+        case 'LSO':
+            // LSO can act only after HR+GM+Factory accepted
+            return isAccepted(s1) && isAccepted(s2) && isAccepted(s3);
+
+        default:
+            return false;
+    }
+};
+
 const Actions = ({
     pkg,
     handleAccept,
@@ -29,29 +81,24 @@ const Actions = ({
         employeePosition: string;
     } | null;
 }) => {
+    const disabled = !canAct(pkg, loggedEmployee);
+
     return (
         <div className="flex justify-end space-x-2">
             <IconButton
                 style={{ color: '#16a34a' }}
                 onClick={() => handleAccept(pkg)}
+                disabled={disabled}
                 className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                disabled={
-                    (loggedEmployee === null && pkg.status2 !== 1 || pkg.status3 !== 1 || pkg.status4 !== 1) ||
-                    (loggedEmployee?.employeePosition === 'General Manager' && pkg.status3 !== 1 || pkg.status4 !== 1) ||
-                    (loggedEmployee?.employeePosition === 'Factory Manager' && pkg.status4 !== 1)
-                }
             >
                 <CheckIcon className="h-4 w-4" />
             </IconButton>
+
             <IconButton
                 style={{ color: '#dc2626' }}
                 onClick={() => handleReject(pkg)}
+                disabled={disabled}
                 className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                disabled={
-                    (loggedEmployee === null && pkg.status2 !== 1 || pkg.status3 !== 1 || pkg.status4 !== 1) ||
-                    (loggedEmployee?.employeePosition === 'General Manager' && pkg.status3 !== 1 || pkg.status4 !== 1) ||
-                    (loggedEmployee?.employeePosition === 'Factory Manager' && pkg.status4 !== 1)
-                }
             >
                 <XMarkIcon className="h-4 w-4" />
             </IconButton>

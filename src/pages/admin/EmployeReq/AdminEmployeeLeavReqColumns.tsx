@@ -82,13 +82,14 @@ export const leaveReqColumns = ({
             align: "right",
         },
         {
-            id: "status4",
+            id: "status",
             label: "Status",
             align: "right",
             render: (pkg) => {
-                const statuses = [pkg.status4];
+                const statuses = [pkg.status1, pkg.status2, pkg.status3, pkg.status4];
                 let statusText = "Unknown";
                 let chipClass = "bg-gray-100 text-gray-800";
+
                 if (statuses.some(status => status === 3)) {
                     statusText = "Rejected";
                     chipClass = "bg-red-100 text-red-800";
@@ -101,7 +102,7 @@ export const leaveReqColumns = ({
                 }
 
                 return (
-                    <span className={`px-3 py-1 rounded-full text-md font-medium ${chipClass}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${chipClass}`}>
                         {statusText}
                     </span>
                 );
