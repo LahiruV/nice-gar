@@ -274,7 +274,7 @@ export const AdminEmployeeForm = ({
                                 }}
                                 startIcon={<PencilIcon className="h-5 w-5" />}
                             >
-                                Edit Package
+                                Edit
                             </Button>
                         </div>
                     </div>

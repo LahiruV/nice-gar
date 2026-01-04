@@ -134,7 +134,7 @@ export const PackageOutRequestForm = ({
             <Modal
                 open={isModalOpen}
                 onClose={handleCloseModal}
-                title={editData ? 'Edit Package Out Request Form' : 'Add New Package Out Request'}
+                title={editData ? 'Edit Out Request Form' : 'Add New Package Out Request'}
             >
                 <form onSubmit={handleSubmit} className="space-y-6 p-4">
 
@@ -277,7 +277,7 @@ export const PackageOutRequestForm = ({
                                 }}
                                 startIcon={<PencilIcon className="h-5 w-5" />}
                             >
-                                Edit Package
+                                Edit
                             </Button>
                         </div>
                     </div>

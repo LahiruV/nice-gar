@@ -12,6 +12,7 @@ const authRoutes = require("./routes/auth");
 const commonRoutes = require("./routes/common");
 const employeeRoutes = require("./routes/employee");
 const leaveRoutes = require("./routes/leave");
+const packageRoutes = require("./routes/package");
 
 const app = express();
 const PORT = process.env.PORT || 4500;
@@ -38,6 +39,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/common", commonRoutes);
 app.use("/api/leaves", leaveRoutes);
+app.use("/api/package-out-requests", packageRoutes);
 
 // === Swagger UI ===
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile, {
