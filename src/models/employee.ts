@@ -66,4 +66,34 @@ export interface EmployeeLeaveRequest {
   status2: number;
   status3: number;
   status4: number;
+}
+
+export interface PackageOutRequestFormData {
+  id?: any;
+  employeeId: string;
+  employeeName?: string;
+  packageName: string;
+  packageDetails: string;
+  date: string;
+  time: string;
+  location: string;
+  status1: number;
+  status2: number;
+  status3: number;
+  status4: number;
+}
+
+export interface PackageOutRequest {
+  _id?: any;
+  employeeId: string;
+  employeeName: string;
+  packageName: string;
+  packageDetails: string;
+  date: string;
+  time: string;
+  location: string;
+  status1: number;
+  status2: number;
+  status3: number;
+  status4: number;
 } 

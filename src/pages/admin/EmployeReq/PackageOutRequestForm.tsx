@@ -1,6 +1,6 @@
 import { TextField, Button, Modal } from '@zenra/widgets';
 import { PencilIcon, } from '@heroicons/react/24/outline';
-import { EmployeeLeaveRequest, EmployeeLeaveRequestFormData } from '@zenra/models';
+import { PackageOutRequest, PackageOutRequestFormData } from '@zenra/models';
 import { toast } from 'sonner';
 import { useLeaveRequest } from '@zenra/services';
 import { useSelector } from 'react-redux';
@@ -9,29 +9,31 @@ import { RootState } from '@zenra/store';
 interface PackageFormProps {
     isModalOpen: boolean;
     setIsModalOpen: Function;
-    editData: EmployeeLeaveRequest | null;
+    editData: PackageOutRequest | null;
     setEditingData: Function;
     isViewModalOpen: boolean;
     setIsViewModalOpen: Function;
-    dataView: EmployeeLeaveRequest | null;
+    dataView: PackageOutRequest | null;
     setDataView: Function;
-    formData: EmployeeLeaveRequestFormData;
+    formData: PackageOutRequestFormData;
     setFormData: Function;
     refetch: Function;
 }
 
-const initialFormData: EmployeeLeaveRequestFormData = {
+const initialFormData: PackageOutRequestFormData = {
     employeeId: '',
-    startDate: '',
-    endDate: '',
-    reason: '',
+    packageName: '',
+    packageDetails: '',
+    date: '',
+    time: '',
+    location: '',
     status1: 1,
     status2: 1,
     status3: 1,
     status4: 1,
 };
 
-export const AdminEmployeeLeavReqForm = ({
+export const PackageOutRequestForm = ({
     isModalOpen,
     setIsModalOpen,
     editData,
@@ -44,12 +46,12 @@ export const AdminEmployeeLeavReqForm = ({
     refetch,
 }: PackageFormProps) => {
 
-    const { leaveReqAddMutate, leaveReqUpdateMutate } = useLeaveRequest();
+    // const { leaveReqAddMutate, leaveReqUpdateMutate } = useLeaveRequest();
     const { loggedEmployee } = useSelector((state: RootState) => state.auth);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData((prev: EmployeeLeaveRequestFormData) => ({
+        setFormData((prev: PackageOutRequestFormData) => ({
             ...prev,
             [name]: value
         }));
@@ -60,66 +62,63 @@ export const AdminEmployeeLeavReqForm = ({
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const startDate = new Date(formData.startDate);
+        const startDate = new Date(formData.date);
         startDate.setHours(0, 0, 0, 0);
         if (startDate < today) {
             toast.error('Start date cannot be in the past');
             return;
         }
-        const endDate = new Date(formData.endDate);
-        endDate.setHours(0, 0, 0, 0);
-        if (endDate < startDate) {
-            toast.error('End date cannot be before start date');
-            return;
-        }
 
         if (editData) {
-            const updatedObj: EmployeeLeaveRequestFormData = {
+            const updatedObj: PackageOutRequestFormData = {
                 ...formData,
                 id: editData._id ? editData._id : undefined
             };
-            leaveReqUpdateMutate(updatedObj, {
-                onSuccess: () => {
-                    refetch();
-                    setFormData(initialFormData);
-                    toast.success('Leave request updated successfully!');
-                },
-                onError: (error: any) => {
-                    toast.error('Leave request update failed');
-                    console.error('Leave request update failed:', error);
-                }
-            });
+            // leaveReqUpdateMutate(updatedObj, {
+            //     onSuccess: () => {
+            //         refetch();
+            //         setFormData(initialFormData);
+            //         toast.success('Leave request updated successfully!');
+            //     },
+            //     onError: (error: any) => {
+            //         toast.error('Leave request update failed');
+            //         console.error('Leave request update failed:', error);
+            //     }
+            // });
         } else {
-            const addObj: EmployeeLeaveRequestFormData = {
+            const addObj: PackageOutRequestFormData = {
                 ...formData,
                 employeeId: loggedEmployee ? loggedEmployee.employeeId : '',
             };
-            leaveReqAddMutate(addObj, {
-                onSuccess: () => {
-                    refetch();
-                    setFormData(initialFormData);
-                    toast.success('Leave request added successfully!');
-                },
-                onError: (error: any) => {
-                    toast.error('Leave request addition failed');
-                    console.error('Leave request addition failed:', error);
-                }
-            });
+            // leaveReqAddMutate(addObj, {
+            //     onSuccess: () => {
+            //         refetch();
+            //         setFormData(initialFormData);
+            //         toast.success('Leave request added successfully!');
+            //     },
+            //     onError: (error: any) => {
+            //         toast.error('Leave request addition failed');
+            //         console.error('Leave request addition failed:', error);
+            //     }
+            // });
         }
         handleCloseModal();
     };
 
-    const handleEdit = (data: EmployeeLeaveRequest) => {
+    const handleEdit = (data: PackageOutRequest) => {
         setEditingData(data);
         setFormData({
             employeeId: data.employeeId,
             employeeName: data.employeeName,
-            startDate: data.startDate,
-            endDate: data.endDate,
-            reason: data.reason,
+            packageName: data.packageName,
+            packageDetails: data.packageDetails,
+            date: data.date,
+            time: data.time,
+            location: data.location,
             status1: data.status1,
             status2: data.status2,
             status3: data.status3,
+            status4: data.status4,
         });
         setIsModalOpen(true);
     };
@@ -138,10 +137,20 @@ export const AdminEmployeeLeavReqForm = ({
                 title={editData ? 'Edit Leave Request Form' : 'Add New Leave Request'}
             >
                 <form onSubmit={handleSubmit} className="space-y-6 p-4">
+
                     <TextField
-                        label="Start Date"
-                        name="startDate"
-                        value={formData.startDate}
+                        label="Package Name"
+                        name="packageName"
+                        value={formData.packageName}
+                        onChange={handleInputChange}
+                        focused
+                        required
+                    />
+
+                    <TextField
+                        label="Date"
+                        name="date"
+                        value={formData.date}
                         type='date'
                         onChange={handleInputChange}
                         required
@@ -149,23 +158,33 @@ export const AdminEmployeeLeavReqForm = ({
                     />
 
                     <TextField
-                        label="End Date"
-                        name="endDate"
-                        value={formData.endDate}
-                        type='date'
+                        label="Time"
+                        name="time"
+                        value={formData.time}
+                        type='time'
                         onChange={handleInputChange}
                         required
                         focused
                     />
 
                     <TextField
-                        label="Reason"
-                        name="reason"
-                        value={formData.reason}
+                        label="Package Details"
+                        name="packageDetails"
+                        value={formData.packageDetails}
                         onChange={handleInputChange}
                         focused
                         required
                     />
+
+                    <TextField
+                        label="Location"
+                        name="location"
+                        value={formData.location}
+                        onChange={handleInputChange}
+                        focused
+                        required
+                    />
+
                     <div className="flex justify-end space-x-4 pt-6">
                         <Button
                             type="button"
@@ -197,16 +216,24 @@ export const AdminEmployeeLeavReqForm = ({
                                 <p className="text-gray-700">{dataView.employeeName}</p>
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900">Start Date</h3>
-                                <p className="text-gray-700">{dataView.startDate}</p>
+                                <h3 className="text-lg font-semibold text-gray-900">Package Name</h3>
+                                <p className="text-gray-700">{dataView.packageName}</p>
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900">End Date</h3>
-                                <p className="text-gray-700">{dataView.endDate}</p>
+                                <h3 className="text-lg font-semibold text-gray-900">Package Details</h3>
+                                <p className="text-gray-700">{dataView.packageDetails}</p>
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900">Reason</h3>
-                                <p className="text-gray-700">{dataView.reason}</p>
+                                <h3 className="text-lg font-semibold text-gray-900">Date</h3>
+                                <p className="text-gray-700">{dataView.date}</p>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900">Time</h3>
+                                <p className="text-gray-700">{dataView.time}</p>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900">Location</h3>
+                                <p className="text-gray-700">{dataView.location}</p>
                             </div>
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-900">Status</h3>

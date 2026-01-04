@@ -27,7 +27,9 @@ export const Sidebar = ({ isOpen }: SidebarProps) => {
       : []),
 
     ...(loggedEmployee?.employeePosition === 'Employee'
-      ? [{ name: 'My Leave', icon: UserGroupIcon, path: '/admin/leave-requests', isNewTab: false }]
+      ? [{ name: 'My Leave', icon: UserGroupIcon, path: '/admin/leave-requests', isNewTab: false },
+      { name: 'Package Out', icon: UserGroupIcon, path: '/admin/package-out-requests', isNewTab: false }
+      ]
       : []),
 
     ...(loggedEmployee?.employeePosition !== 'Employee'
