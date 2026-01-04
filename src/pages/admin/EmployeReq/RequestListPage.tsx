@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { PageTransition } from '@zenra/components';
 import { CircularIndeterminate, sortArray, SortConfig, Table } from '@zenra/widgets';
-import { EmployeeLeaveRequest, EmployeeLeaveRequestFormData } from '@zenra/models';
+import { EmployeeLeaveRequest } from '@zenra/models';
 import { toast } from 'sonner';
 import { getLeaveRequests, useLeaveRequest } from '@zenra/services';
 import { useSelector } from 'react-redux';
