@@ -14,7 +14,6 @@ type ApproverKey = 'status1' | 'status2' | 'status3' | 'status4';
 
 const ACCEPT: LeaveStatus = 2;
 const REJECT: LeaveStatus = 3;
-const PENDING: LeaveStatus = 1;
 
 const getApproverKey = (loggedEmployee: any): ApproverKey | null => {
     if (loggedEmployee === null) return 'status1'; // HR / admin user (null)

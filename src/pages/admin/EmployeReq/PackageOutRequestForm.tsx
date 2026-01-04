@@ -2,7 +2,7 @@ import { TextField, Button, Modal } from '@zenra/widgets';
 import { PencilIcon, } from '@heroicons/react/24/outline';
 import { PackageOutRequest, PackageOutRequestFormData } from '@zenra/models';
 import { toast } from 'sonner';
-import { useLeaveRequest } from '@zenra/services';
+import { usePackageOutRequest } from '@zenra/services';
 import { useSelector } from 'react-redux';
 import { RootState } from '@zenra/store';
 
@@ -46,7 +46,7 @@ export const PackageOutRequestForm = ({
     refetch,
 }: PackageFormProps) => {
 
-    // const { leaveReqAddMutate, leaveReqUpdateMutate } = useLeaveRequest();
+    const { packageOutAddMutate, packageOutUpdateMutate } = usePackageOutRequest();
     const { loggedEmployee } = useSelector((state: RootState) => state.auth);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -74,33 +74,33 @@ export const PackageOutRequestForm = ({
                 ...formData,
                 id: editData._id ? editData._id : undefined
             };
-            // leaveReqUpdateMutate(updatedObj, {
-            //     onSuccess: () => {
-            //         refetch();
-            //         setFormData(initialFormData);
-            //         toast.success('Leave request updated successfully!');
-            //     },
-            //     onError: (error: any) => {
-            //         toast.error('Leave request update failed');
-            //         console.error('Leave request update failed:', error);
-            //     }
-            // });
+            packageOutUpdateMutate(updatedObj, {
+                onSuccess: () => {
+                    refetch();
+                    setFormData(initialFormData);
+                    toast.success('Package out request updated successfully!');
+                },
+                onError: (error: any) => {
+                    toast.error('Package out request update failed');
+                    console.error('Package out request update failed:', error);
+                }
+            });
         } else {
             const addObj: PackageOutRequestFormData = {
                 ...formData,
                 employeeId: loggedEmployee ? loggedEmployee.employeeId : '',
             };
-            // leaveReqAddMutate(addObj, {
-            //     onSuccess: () => {
-            //         refetch();
-            //         setFormData(initialFormData);
-            //         toast.success('Leave request added successfully!');
-            //     },
-            //     onError: (error: any) => {
-            //         toast.error('Leave request addition failed');
-            //         console.error('Leave request addition failed:', error);
-            //     }
-            // });
+            packageOutAddMutate(addObj, {
+                onSuccess: () => {
+                    refetch();
+                    setFormData(initialFormData);
+                    toast.success('Package out request added successfully!');
+                },
+                onError: (error: any) => {
+                    toast.error('Package out request addition failed');
+                    console.error('Package out request addition failed:', error);
+                }
+            });
         }
         handleCloseModal();
     };
@@ -134,7 +134,7 @@ export const PackageOutRequestForm = ({
             <Modal
                 open={isModalOpen}
                 onClose={handleCloseModal}
-                title={editData ? 'Edit Leave Request Form' : 'Add New Leave Request'}
+                title={editData ? 'Edit Package Out Request Form' : 'Add New Package Out Request'}
             >
                 <form onSubmit={handleSubmit} className="space-y-6 p-4">
 
@@ -197,7 +197,7 @@ export const PackageOutRequestForm = ({
                             type="submit"
                             variant="primary"
                         >
-                            {editData ? 'Update Leave Request' : 'Add Leave Request'}
+                            {editData ? 'Update Package Out Request' : 'Add Package Out Request'}
                         </Button>
                     </div>
                 </form>
@@ -206,7 +206,7 @@ export const PackageOutRequestForm = ({
             <Modal
                 open={isViewModalOpen}
                 onClose={() => setIsViewModalOpen(false)}
-                title="EmployeeLeaveRequest Details"
+                title="Package Out Request Details"
             >
                 {dataView && (
                     <div className="space-y-6">

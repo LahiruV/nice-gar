@@ -4,7 +4,7 @@ import { AlertDialogSlide, Button, CircularIndeterminate, sortArray, SortConfig,
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { PackageOutRequest, PackageOutRequestFormData } from '@zenra/models';
 import { toast } from 'sonner';
-import { getLeaveRequestsByEmployee, useLeaveRequest } from '@zenra/services';
+import { getPackageOutRequestsByEmployee, usePackageOutRequest } from '@zenra/services';
 import { useSelector } from 'react-redux';
 import { RootState } from '@zenra/store';
 import { PackageOutRequestForm } from './PackageOutRequestForm';
@@ -25,8 +25,8 @@ const initialFormData: PackageOutRequestFormData = {
 
 export const PackageOutPage = () => {
     const { loggedEmployee } = useSelector((state: RootState) => state.auth);
-    const { leaveReqDeleteMutate } = useLeaveRequest();
-    const { response: tableData, refetch, isFetching } = getLeaveRequestsByEmployee(true, loggedEmployee ? loggedEmployee.employeeId : '');
+    const { packageOutDeleteMutate } = usePackageOutRequest();
+    const { response: tableData, refetch, isFetching } = getPackageOutRequestsByEmployee(true, loggedEmployee ? loggedEmployee.employeeId : '');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [editData, setEditData] = useState<PackageOutRequest | null>(null);
@@ -69,7 +69,7 @@ export const PackageOutPage = () => {
     const handleDelete = (id: string) => {
         setIsDeleteDialogOpen(true);
         setTitle('Confirm Deletion');
-        setDescription('Are you sure you want to delete this leave request?');
+        setDescription('Are you sure you want to delete this package out request?');
         setAgreeButtonText('Delete');
         setDisagreeButtonText('Cancel');
         setDelID(id);
@@ -90,13 +90,13 @@ export const PackageOutPage = () => {
 
     const handleDeleteConfirmed = () => {
         if (delID) {
-            leaveReqDeleteMutate(delID, {
+            packageOutDeleteMutate(delID, {
                 onSuccess: () => {
                     refetch();
-                    toast.success('Leave request deleted successfully!');
+                    toast.success('Package out request deleted successfully!');
                 },
                 onError: (error) => {
-                    toast.error('Failed to delete leave request. Please try again.');
+                    toast.error('Failed to delete package out request. Please try again.');
                     console.error('Delete failed:', error);
                 },
             });
