@@ -10,7 +10,7 @@ import { RequestListPage } from './pages/admin/EmployeReq/RequestListPage'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-  return !isAuthenticated ? <Navigate to="/login" /> : <>{children}</>;
+  return !isAuthenticated ? <Navigate to="/" /> : <>{children}</>;
 };
 
 function App() {

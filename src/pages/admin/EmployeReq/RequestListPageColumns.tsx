@@ -1,10 +1,10 @@
-import { PencilIcon, TrashIcon, EyeIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@mui/material";
 import { Column, EmployeeLeaveRequest } from "@zenra/models";
 
 interface RequestListPageColumnsProps {
-    handleEdit: (pkg: EmployeeLeaveRequest) => void;
-    handleDelete: (pkgId: string) => void;
+    handleAccept: (pkg: EmployeeLeaveRequest) => void;
+    handleReject: (pkg: EmployeeLeaveRequest) => void;
 }
 
 /**
@@ -13,28 +13,28 @@ interface RequestListPageColumnsProps {
  */
 const Actions = ({
     pkg,
-    handleEdit,
-    handleDelete,
+    handleAccept,
+    handleReject,
 }: {
     pkg: EmployeeLeaveRequest;
-    handleEdit: (pkg: EmployeeLeaveRequest) => void;
-    handleDelete: (pkgId: string) => void;
+    handleAccept: (pkg: EmployeeLeaveRequest) => void;
+    handleReject: (pkg: EmployeeLeaveRequest) => void;
 }) => {
     return (
         <div className="flex justify-end space-x-2">
             <IconButton
                 style={{ color: '#16a34a' }}
-                onClick={() => handleEdit(pkg)}
+                onClick={() => handleAccept(pkg)}
                 className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
             >
-                <PencilIcon className="h-4 w-4" />
+                <CheckIcon className="h-4 w-4" />
             </IconButton>
             <IconButton
                 style={{ color: '#dc2626' }}
-                onClick={() => handleDelete(pkg._id ?? "")}
+                onClick={() => handleReject(pkg)}
                 className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             >
-                <TrashIcon className="h-4 w-4" />
+                <XMarkIcon className="h-4 w-4" />
             </IconButton>
         </div>
     );
@@ -44,8 +44,8 @@ const Actions = ({
  * Employee Columns Definition
  */
 export const requestListPageColumns = ({
-    handleEdit,
-    handleDelete,
+    handleAccept,
+    handleReject,
 }: RequestListPageColumnsProps): Column<EmployeeLeaveRequest>[] => {
     return [
         {
@@ -78,7 +78,7 @@ export const requestListPageColumns = ({
                 const statuses = [pkg.status1];
                 let statusText = "Unknown";
                 let chipClass = "bg-gray-100 text-gray-800";
-                if (statuses.some(status => status === 0)) {
+                if (statuses.some(status => status === 3)) {
                     statusText = "Rejected";
                     chipClass = "bg-red-100 text-red-800";
                 } else if (statuses.every(status => status === 2)) {
@@ -104,7 +104,7 @@ export const requestListPageColumns = ({
                 const statuses = [pkg.status2];
                 let statusText = "Unknown";
                 let chipClass = "bg-gray-100 text-gray-800";
-                if (statuses.some(status => status === 0)) {
+                if (statuses.some(status => status === 3)) {
                     statusText = "Rejected";
                     chipClass = "bg-red-100 text-red-800";
                 } else if (statuses.every(status => status === 2)) {
@@ -130,7 +130,7 @@ export const requestListPageColumns = ({
                 const statuses = [pkg.status3];
                 let statusText = "Unknown";
                 let chipClass = "bg-gray-100 text-gray-800";
-                if (statuses.some(status => status === 0)) {
+                if (statuses.some(status => status === 3)) {
                     statusText = "Rejected";
                     chipClass = "bg-red-100 text-red-800";
                 } else if (statuses.every(status => status === 2)) {
@@ -156,7 +156,7 @@ export const requestListPageColumns = ({
                 const statuses = [pkg.status4];
                 let statusText = "Unknown";
                 let chipClass = "bg-gray-100 text-gray-800";
-                if (statuses.some(status => status === 0)) {
+                if (statuses.some(status => status === 3)) {
                     statusText = "Rejected";
                     chipClass = "bg-red-100 text-red-800";
                 } else if (statuses.every(status => status === 2)) {
@@ -181,8 +181,8 @@ export const requestListPageColumns = ({
             render: (pkg) => (
                 <Actions
                     pkg={pkg}
-                    handleEdit={handleEdit}
-                    handleDelete={handleDelete}
+                    handleAccept={handleAccept}
+                    handleReject={handleReject}
                 />
             ),
         },

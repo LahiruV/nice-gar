@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { PageTransition } from '@zenra/components';
-import { AlertDialogSlide, CircularIndeterminate, sortArray, SortConfig, Table } from '@zenra/widgets';
+import { CircularIndeterminate, sortArray, SortConfig, Table } from '@zenra/widgets';
 import { EmployeeLeaveRequest, EmployeeLeaveRequestFormData } from '@zenra/models';
 import { toast } from 'sonner';
 import { getLeaveRequests, useLeaveRequest } from '@zenra/services';
@@ -8,28 +8,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@zenra/store';
 import { requestListPageColumns } from './RequestListPageColumns';
 
-const initialFormData: EmployeeLeaveRequestFormData = {
-    employeeId: '',
-    startDate: '',
-    endDate: '',
-    reason: '',
-    status1: 1,
-    status2: 1,
-    status3: 1,
-    status4: 1,
-};
-
 export const RequestListPage = () => {
     const { loggedEmployee } = useSelector((state: RootState) => state.auth);
-    const { leaveReqDeleteMutate } = useLeaveRequest();
+    const { leaveReqUpdateMutate } = useLeaveRequest();
     const { response: tableData, refetch, isFetching } = getLeaveRequests(true);
-    const [formData, setFormData] = useState<EmployeeLeaveRequestFormData>(initialFormData);
-    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
-    const [title, setTitle] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [agreeButtonText, setAgreeButtonText] = useState<string>('Yes');
-    const [disagreeButtonText, setDisagreeButtonText] = useState<string>('No');
-    const [delID, setDelID] = useState<string>('');
 
     const [sortConfig, setSortConfig] = useState<{
         field: string;
@@ -39,50 +21,54 @@ export const RequestListPage = () => {
         direction: 'asc',
     });
 
-    const handleEdit = (data: EmployeeLeaveRequest) => {
-        setFormData({
+    const handleAccept = (data: EmployeeLeaveRequest) => {
+        const obj = {
             id: data._id,
             employeeId: data.employeeId,
             employeeName: data.employeeName,
             startDate: data.startDate,
             endDate: data.endDate,
             reason: data.reason,
-            status1: data.status1,
-            status2: data.status2,
-            status3: data.status3,
-            status4: data.status4,
+            status1: loggedEmployee === null ? 2 : 1,
+            status2: loggedEmployee?.employeePosition === 'General Manager' ? 2 : 1,
+            status3: loggedEmployee?.employeePosition === 'Factory Manager' ? 2 : 1,
+            status4: loggedEmployee?.employeePosition === 'LSO Officer' ? 2 : 1,
+        };
+        leaveReqUpdateMutate(obj, {
+            onSuccess: () => {
+                refetch();
+                toast.success('Leave request updated successfully!');
+            },
+            onError: (error: any) => {
+                toast.error('Leave request update failed');
+                console.error('Leave request update failed:', error);
+            }
         });
     };
 
-    const handleDelete = (id: string) => {
-        setIsDeleteDialogOpen(true);
-        setTitle('Confirm Deletion');
-        setDescription('Are you sure you want to delete this leave request?');
-        setAgreeButtonText('Delete');
-        setDisagreeButtonText('Cancel');
-        setDelID(id);
-    };
-
-    const handleDialogClose = () => setIsDeleteDialogOpen(false);
-
-    const handleDeleteConfirmed = () => {
-        if (delID) {
-            leaveReqDeleteMutate(delID, {
-                onSuccess: () => {
-                    refetch();
-                    toast.success('Leave request deleted successfully!');
-                },
-                onError: (error) => {
-                    toast.error('Failed to delete leave request. Please try again.');
-                    console.error('Delete failed:', error);
-                },
-            });
-        }
-        setIsDeleteDialogOpen(false);
-    };
-    const handleDeleteCancelled = () => {
-        setIsDeleteDialogOpen(false);
-        toast.info('Deletion cancelled');
+    const handleReject = (data: EmployeeLeaveRequest) => {
+        const obj = {
+            id: data._id,
+            employeeId: data.employeeId,
+            employeeName: data.employeeName,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            reason: data.reason,
+            status1: loggedEmployee === null ? 3 : 1,
+            status2: loggedEmployee?.employeePosition === 'General Manager' ? 3 : 1,
+            status3: loggedEmployee?.employeePosition === 'Factory Manager' ? 3 : 1,
+            status4: loggedEmployee?.employeePosition === 'LSO Officer' ? 3 : 1,
+        };
+        leaveReqUpdateMutate(obj, {
+            onSuccess: () => {
+                refetch();
+                toast.success('Leave request updated successfully!');
+            },
+            onError: (error: any) => {
+                toast.error('Leave request update failed');
+                console.error('Leave request update failed:', error);
+            }
+        });
     };
 
     const sortedValue = useMemo(() => {
@@ -102,7 +88,7 @@ export const RequestListPage = () => {
                     </div>
                     {isFetching ? <CircularIndeterminate /> :
                         <Table
-                            columns={requestListPageColumns({ handleEdit, handleDelete })}
+                            columns={requestListPageColumns({ handleAccept, handleReject })}
                             data={sortedValue || []}
                             keyExtractor={(data) => data._id ?? ''}
                             defaultSort={sortConfig}
@@ -113,24 +99,6 @@ export const RequestListPage = () => {
                     }
                 </div>
             </div>
-
-            <AlertDialogSlide
-                open={isDeleteDialogOpen}
-                handleAgree={handleDeleteConfirmed}
-                handleDisagree={handleDeleteCancelled}
-                onClose={handleDialogClose}
-                handleClose={handleDialogClose}
-                title={title}
-                description={description}
-                agreeButtonText={agreeButtonText}
-                disagreeButtonText={disagreeButtonText}
-                aColor='error'
-                aVariant='contained'
-                aSize='small'
-                dColor='primary'
-                dVariant='outlined'
-                dSize='small'
-            />
         </PageTransition>
     );
 };
