@@ -1,14 +1,12 @@
 import { useMemo, useState } from 'react';
 import { PageTransition } from '@zenra/components';
-import { AlertDialogSlide, Button, CircularIndeterminate, sortArray, SortConfig, Table } from '@zenra/widgets';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { AlertDialogSlide, CircularIndeterminate, sortArray, SortConfig, Table } from '@zenra/widgets';
 import { EmployeeLeaveRequest, EmployeeLeaveRequestFormData } from '@zenra/models';
 import { toast } from 'sonner';
-import { getLeaveRequestsByEmployee, useLeaveRequest } from '@zenra/services';
-import { AdminEmployeeLeavReqForm } from './AdminEmployeeLeavReqForm';
-import { leaveReqColumns } from './AdminEmployeeLeavReqColumns';
+import { getLeaveRequests, useLeaveRequest } from '@zenra/services';
 import { useSelector } from 'react-redux';
 import { RootState } from '@zenra/store';
+import { requestListPageColumns } from './RequestListPageColumns';
 
 const initialFormData: EmployeeLeaveRequestFormData = {
     employeeId: '',
@@ -21,14 +19,10 @@ const initialFormData: EmployeeLeaveRequestFormData = {
     status4: 1,
 };
 
-export const AdminEmployeeLeavReq = () => {
+export const RequestListPage = () => {
     const { loggedEmployee } = useSelector((state: RootState) => state.auth);
     const { leaveReqDeleteMutate } = useLeaveRequest();
-    const { response: tableData, refetch, isFetching } = getLeaveRequestsByEmployee(true, loggedEmployee ? loggedEmployee.employeeId : '');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-    const [editData, setEditData] = useState<EmployeeLeaveRequest | null>(null);
-    const [dataView, setDataView] = useState<EmployeeLeaveRequest | null>(null);
+    const { response: tableData, refetch, isFetching } = getLeaveRequests(true);
     const [formData, setFormData] = useState<EmployeeLeaveRequestFormData>(initialFormData);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
@@ -46,7 +40,6 @@ export const AdminEmployeeLeavReq = () => {
     });
 
     const handleEdit = (data: EmployeeLeaveRequest) => {
-        setEditData(data);
         setFormData({
             id: data._id,
             employeeId: data.employeeId,
@@ -59,7 +52,6 @@ export const AdminEmployeeLeavReq = () => {
             status3: data.status3,
             status4: data.status4,
         });
-        setIsModalOpen(true);
     };
 
     const handleDelete = (id: string) => {
@@ -69,17 +61,6 @@ export const AdminEmployeeLeavReq = () => {
         setAgreeButtonText('Delete');
         setDisagreeButtonText('Cancel');
         setDelID(id);
-    };
-
-    const handleView = (data: EmployeeLeaveRequest) => {
-        setDataView(data);
-        setIsViewModalOpen(true);
-    };
-
-    const handleAddNew = () => {
-        setEditData(null);
-        setFormData(initialFormData);
-        setIsModalOpen(true);
     };
 
     const handleDialogClose = () => setIsDeleteDialogOpen(false);
@@ -118,17 +99,10 @@ export const AdminEmployeeLeavReq = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="flex justify-between items-center mb-8">
                         <h1 className="text-3xl font-bold text-gray-900"> Leave Requests</h1>
-                        <Button
-                            variant="primary"
-                            startIcon={<PlusIcon className="h-5 w-5" />}
-                            onClick={handleAddNew}
-                        >
-                            Add Leave Request
-                        </Button>
                     </div>
                     {isFetching ? <CircularIndeterminate /> :
                         <Table
-                            columns={leaveReqColumns({ handleView, handleEdit, handleDelete })}
+                            columns={requestListPageColumns({ handleEdit, handleDelete })}
                             data={sortedValue || []}
                             keyExtractor={(data) => data._id ?? ''}
                             defaultSort={sortConfig}
@@ -137,19 +111,6 @@ export const AdminEmployeeLeavReq = () => {
                             defaultRowsPerPage={10}
                         />
                     }
-                    <AdminEmployeeLeavReqForm
-                        refetch={refetch}
-                        isModalOpen={isModalOpen}
-                        setIsModalOpen={setIsModalOpen}
-                        editData={editData}
-                        setEditingData={setEditData}
-                        isViewModalOpen={isViewModalOpen}
-                        setIsViewModalOpen={setIsViewModalOpen}
-                        dataView={dataView}
-                        setDataView={setDataView}
-                        formData={formData}
-                        setFormData={setFormData}
-                    />
                 </div>
             </div>
 

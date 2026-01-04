@@ -27,6 +27,9 @@ export const EmployeeLoginPage = () => {
                 if (response.employeePosition === 'Employee') {
                     navigate('/admin/leave-requests');
                 }
+                if (response.employeePosition !== 'Employee') {
+                    navigate('/admin/leave-acceptance');
+                }
             },
             onError: (error) => {
                 toast.error('Login failed. Please check your credentials and try again.');

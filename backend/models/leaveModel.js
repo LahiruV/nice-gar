@@ -29,6 +29,10 @@ const leaveSchema = new mongoose.Schema({
     status3: {
         type: Number,
         default: 1
+    },
+    status4: {
+        type: Number,
+        default: 1
     }
 });
 

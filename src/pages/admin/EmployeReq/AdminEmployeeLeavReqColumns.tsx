@@ -86,7 +86,7 @@ export const leaveReqColumns = ({
             label: "Status",
             align: "right",
             render: (pkg) => {
-                const statuses = [pkg.status1, pkg.status2, pkg.status3];
+                const statuses = [pkg.status1, pkg.status2, pkg.status3, pkg.status4];
                 let statusText = "Unknown";
                 let chipClass = "bg-gray-100 text-gray-800";
 

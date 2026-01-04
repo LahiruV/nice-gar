@@ -28,6 +28,7 @@ const initialFormData: EmployeeLeaveRequestFormData = {
     status1: 1,
     status2: 1,
     status3: 1,
+    status4: 1,
 };
 
 export const AdminEmployeeLeavReqForm = ({

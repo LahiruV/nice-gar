@@ -2,8 +2,8 @@ const Leave = require("../models/leaveModel");
 
 // Add a new leave request
 exports.addLeaveRequest = async (req, res) => {
-    const { employeeId, startDate, endDate, reason, status1, status2, status3 } = req.body;
-    if (!employeeId || !startDate || !endDate || !reason || !status1 || !status2 || !status3) {
+    const { employeeId, startDate, endDate, reason, status1, status2, status3, status4 } = req.body;
+    if (!employeeId || !startDate || !endDate || !reason || !status1 || !status2 || !status3 || !status4) {
         return res.status(400).json({ error: "Missing leave request details" });
     }
     try {
@@ -14,7 +14,8 @@ exports.addLeaveRequest = async (req, res) => {
             reason,
             status1,
             status2,
-            status3
+            status3,
+            status4
         });
         const savedLeave = await newLeave.save();
         res.status(201).json({ message: "Leave request added successfully", leaveId: savedLeave._id });
@@ -35,7 +36,8 @@ exports.getLeaveRequests = async (req, res) => {
             reason: leave.reason,
             status1: leave.status1,
             status2: leave.status2,
-            status3: leave.status3
+            status3: leave.status3,
+            status4: leave.status4
         }));
         res.json(formattedLeaves);
     } catch (err) {
@@ -59,7 +61,8 @@ exports.getLeaveRequestsByEmployee = async (req, res) => {
             reason: leave.reason,
             status1: leave.status1,
             status2: leave.status2,
-            status3: leave.status3
+            status3: leave.status3,
+            status4: leave.status4
         }));
         res.json(formattedLeaves);
     } catch (err) {
@@ -69,8 +72,8 @@ exports.getLeaveRequestsByEmployee = async (req, res) => {
 
 // Update an leave request
 exports.updateLeaveRequest = async (req, res) => {
-    const { id, employeeId, startDate, endDate, reason, status1, status2, status3 } = req.body;
-    if (!id || !employeeId || !startDate || !endDate || !reason || !status1 || !status2 || !status3) {
+    const { id, employeeId, startDate, endDate, reason, status1, status2, status3, status4 } = req.body;
+    if (!id || !employeeId || !startDate || !endDate || !reason || !status1 || !status2 || !status3 || !status4) {
         return res.status(400).json({ error: "Missing leave request details" });
     }
 
@@ -82,7 +85,8 @@ exports.updateLeaveRequest = async (req, res) => {
             reason,
             status1,
             status2,
-            status3
+            status3,
+            status4
         });
         res.json({ message: "Leave request updated successfully" });
     } catch (err) {

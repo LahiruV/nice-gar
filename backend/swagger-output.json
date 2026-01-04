@@ -350,6 +350,9 @@
                 },
                 "status3": {
                   "example": "any"
+                },
+                "status4": {
+                  "example": "any"
                 }
               }
             }
@@ -437,6 +440,9 @@
                   "example": "any"
                 },
                 "status3": {
+                  "example": "any"
+                },
+                "status4": {
                   "example": "any"
                 }
               }

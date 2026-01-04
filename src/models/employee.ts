@@ -52,6 +52,7 @@ export interface EmployeeLeaveRequestFormData {
   status1: number;
   status2: number;
   status3: number;
+  status4: number;
 }
 
 export interface EmployeeLeaveRequest {
@@ -64,4 +65,5 @@ export interface EmployeeLeaveRequest {
   status1: number;
   status2: number;
   status3: number;
+  status4: number;
 } 
