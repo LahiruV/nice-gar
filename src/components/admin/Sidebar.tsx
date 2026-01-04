@@ -33,7 +33,9 @@ export const Sidebar = ({ isOpen }: SidebarProps) => {
       : []),
 
     ...(loggedEmployee?.employeePosition !== 'Employee'
-      ? [{ name: 'Leave Requests', icon: UserGroupIcon, path: '/admin/leave-acceptance', isNewTab: false }]
+      ? [{ name: 'Leave Requests', icon: UserGroupIcon, path: '/admin/leave-acceptance', isNewTab: false },
+      { name: 'Package Out Requests', icon: UserGroupIcon, path: '/admin/package-out-requests-list', isNewTab: false }
+      ]
       : []),
   ];
   return (
