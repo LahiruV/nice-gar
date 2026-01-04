@@ -5,6 +5,10 @@ import { Column, EmployeeLeaveRequest } from "@zenra/models";
 interface RequestListPageColumnsProps {
     handleAccept: (pkg: EmployeeLeaveRequest) => void;
     handleReject: (pkg: EmployeeLeaveRequest) => void;
+    loggedEmployee: {
+        employeeId: string;
+        employeePosition: string;
+    } | null;
 }
 
 /**
@@ -15,10 +19,15 @@ const Actions = ({
     pkg,
     handleAccept,
     handleReject,
+    loggedEmployee,
 }: {
     pkg: EmployeeLeaveRequest;
     handleAccept: (pkg: EmployeeLeaveRequest) => void;
     handleReject: (pkg: EmployeeLeaveRequest) => void;
+    loggedEmployee: {
+        employeeId: string;
+        employeePosition: string;
+    } | null;
 }) => {
     return (
         <div className="flex justify-end space-x-2">
@@ -26,6 +35,11 @@ const Actions = ({
                 style={{ color: '#16a34a' }}
                 onClick={() => handleAccept(pkg)}
                 className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                disabled={
+                    (loggedEmployee === null && pkg.status2 !== 1 || pkg.status3 !== 1 || pkg.status4 !== 1) ||
+                    (loggedEmployee?.employeePosition === 'General Manager' && pkg.status3 !== 1 || pkg.status4 !== 1) ||
+                    (loggedEmployee?.employeePosition === 'Factory Manager' && pkg.status4 !== 1)
+                }
             >
                 <CheckIcon className="h-4 w-4" />
             </IconButton>
@@ -33,6 +47,11 @@ const Actions = ({
                 style={{ color: '#dc2626' }}
                 onClick={() => handleReject(pkg)}
                 className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                disabled={
+                    (loggedEmployee === null && pkg.status2 !== 1 || pkg.status3 !== 1 || pkg.status4 !== 1) ||
+                    (loggedEmployee?.employeePosition === 'General Manager' && pkg.status3 !== 1 || pkg.status4 !== 1) ||
+                    (loggedEmployee?.employeePosition === 'Factory Manager' && pkg.status4 !== 1)
+                }
             >
                 <XMarkIcon className="h-4 w-4" />
             </IconButton>
@@ -46,6 +65,7 @@ const Actions = ({
 export const requestListPageColumns = ({
     handleAccept,
     handleReject,
+    loggedEmployee,
 }: RequestListPageColumnsProps): Column<EmployeeLeaveRequest>[] => {
     return [
         {
@@ -183,6 +203,7 @@ export const requestListPageColumns = ({
                     pkg={pkg}
                     handleAccept={handleAccept}
                     handleReject={handleReject}
+                    loggedEmployee={loggedEmployee}
                 />
             ),
         },

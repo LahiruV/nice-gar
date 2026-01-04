@@ -88,7 +88,7 @@ export const RequestListPage = () => {
                     </div>
                     {isFetching ? <CircularIndeterminate /> :
                         <Table
-                            columns={requestListPageColumns({ handleAccept, handleReject })}
+                            columns={requestListPageColumns({ handleAccept, handleReject, loggedEmployee })}
                             data={sortedValue || []}
                             keyExtractor={(data) => data._id ?? ''}
                             defaultSort={sortConfig}
