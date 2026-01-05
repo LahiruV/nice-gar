@@ -7,6 +7,7 @@ import { getPackageOutRequests, usePackageOutRequest } from '@zenra/services';
 import { useSelector } from 'react-redux';
 import { RootState } from '@zenra/store';
 import { packageOutRequestListPageColumns } from './PackageOutReqListColumns';
+import { PackageOutRequestForm } from './PackageOutRequestForm';
 
 type LeaveStatus = 1 | 2 | 3; // 1=pending, 2=accepted, 3=rejected (adjust if different)
 
@@ -74,6 +75,13 @@ export const PackageOutReqList = () => {
     const { loggedEmployee } = useSelector((state: RootState) => state.auth);
     const { response: tableData, refetch, isFetching } = getPackageOutRequests(true);
     const { packageOutUpdateMutate } = usePackageOutRequest();
+    const [dataView, setDataView] = useState<PackageOutRequest | null>(null);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+
+    const handleView = (data: PackageOutRequest) => {
+        setDataView(data);
+        setIsViewModalOpen(true);
+    };
 
     const [sortConfig, setSortConfig] = useState<{
         field: string;
@@ -133,7 +141,7 @@ export const PackageOutReqList = () => {
                         <CircularIndeterminate />
                     ) : (
                         <Table
-                            columns={packageOutRequestListPageColumns({ handleAccept, handleReject, loggedEmployee })}
+                            columns={packageOutRequestListPageColumns({ handleView, handleAccept, handleReject, loggedEmployee })}
                             data={sortedValue || []}
                             keyExtractor={(data) => data._id ?? ''}
                             defaultSort={sortConfig}
@@ -142,6 +150,33 @@ export const PackageOutReqList = () => {
                             defaultRowsPerPage={10}
                         />
                     )}
+                    <PackageOutRequestForm
+                        refetch={refetch}
+                        isModalOpen={false}
+                        setIsModalOpen={() => { }}
+                        editData={null}
+                        setEditingData={() => { }}
+                        isViewModalOpen={isViewModalOpen}
+                        setIsViewModalOpen={setIsViewModalOpen}
+                        dataView={dataView}
+                        setDataView={setDataView}
+                        formData={
+                            {
+                                employeeId: '',
+                                employeeName: '',
+                                packageName: '',
+                                packageDetails: '',
+                                date: '',
+                                time: '',
+                                location: '',
+                                status1: 1,
+                                status2: 1,
+                                status3: 1,
+                                status4: 1,
+                            }
+                        }
+                        setFormData={() => { }}
+                    />
                 </div>
             </div>
         </PageTransition>

@@ -1,8 +1,9 @@
-import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { CheckIcon, EyeIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@mui/material";
 import { Column, PackageOutRequest } from "@zenra/models";
 
 interface PackageOutRequestListPageColumnsProps {
+    handleView: (pkg: PackageOutRequest) => void;
     handleAccept: (pkg: PackageOutRequest) => void;
     handleReject: (pkg: PackageOutRequest) => void;
     loggedEmployee: {
@@ -69,11 +70,13 @@ const canAct = (pkg: PackageOutRequest, loggedEmployee: { employeePosition: stri
 
 const Actions = ({
     pkg,
+    handleView,
     handleAccept,
     handleReject,
     loggedEmployee,
 }: {
     pkg: PackageOutRequest;
+    handleView: (pkg: PackageOutRequest) => void;
     handleAccept: (pkg: PackageOutRequest) => void;
     handleReject: (pkg: PackageOutRequest) => void;
     loggedEmployee: {
@@ -85,6 +88,13 @@ const Actions = ({
 
     return (
         <div className="flex justify-end space-x-2">
+            <IconButton
+                style={{ color: '#306bec' }}
+                onClick={() => handleView(pkg)}
+                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            >
+                <EyeIcon className="h-4 w-4" />
+            </IconButton>
             <IconButton
                 style={{ color: '#16a34a' }}
                 onClick={() => handleAccept(pkg)}
@@ -110,16 +120,17 @@ const Actions = ({
  * Package Out Request Columns Definition
  */
 export const packageOutRequestListPageColumns = ({
+    handleView,
     handleAccept,
     handleReject,
     loggedEmployee,
 }: PackageOutRequestListPageColumnsProps): Column<PackageOutRequest>[] => {
     return [
-        {
-            id: "employeeName",
-            label: "Employee Name",
-            align: "right",
-        },
+        // {
+        //     id: "employeeName",
+        //     label: "Employee Name",
+        //     align: "right",
+        // },
         {
             id: "packageName",
             label: "Package Name",
@@ -141,11 +152,11 @@ export const packageOutRequestListPageColumns = ({
             label: "Location",
             align: "right",
         },
-        {
-            id: "packageDetails",
-            label: "Package Details",
-            align: "right",
-        },
+        // {
+        //     id: "packageDetails",
+        //     label: "Package Details",
+        //     align: "right",
+        // },
         {
             id: "status1",
             label: "HR Manager Status",
@@ -257,6 +268,7 @@ export const packageOutRequestListPageColumns = ({
             render: (pkg) => (
                 <Actions
                     pkg={pkg}
+                    handleView={handleView}
                     handleAccept={handleAccept}
                     handleReject={handleReject}
                     loggedEmployee={loggedEmployee}

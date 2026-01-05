@@ -36,6 +36,7 @@ const Actions = ({
                 style={{ color: '#16a34a' }}
                 onClick={() => handleEdit(pkg)}
                 className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                disabled={pkg.status1 !== 1 || pkg.status2 !== 1 || pkg.status3 !== 1 || pkg.status4 !== 1}
             >
                 <PencilIcon className="h-4 w-4" />
             </IconButton>
@@ -43,6 +44,7 @@ const Actions = ({
                 style={{ color: '#dc2626' }}
                 onClick={() => handleDelete(pkg._id ?? "")}
                 className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                disabled={pkg.status1 !== 1 || pkg.status2 !== 1 || pkg.status3 !== 1 || pkg.status4 !== 1}
             >
                 <TrashIcon className="h-4 w-4" />
             </IconButton>
